@@ -20,6 +20,7 @@
 #include "Daemon.h"
 #include "../Common/Utils.h"
 #include "../Common/Logger.h"
+#include "../Common/Exceptions.h"
 
 #define LOCKMODE (S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)  //for lock file function
 #define STD_MB 1048576
@@ -35,12 +36,25 @@ Daemon::Daemon(std::string daemon_home_path,bool daemon){
     boost::filesystem::path lock_file_p(this->daemon_home_path);
     lock_file_p /= this->lock_file_name;
     this->lock_file_path = lock_file_p.string();
+}
 
-    this->settings = new ClientSettings();
-    this->settings->parseFile("/home/judge/etc/judge.conf");  //string config_file_path = ClientPath::join(this->daemon_home_path,"etc/judge.conf");
+void Daemon::init(){
+    try{
+        this->settings = new ClientSettings("/home/judge/etc/judge.conf");
+        this->settings->init();  //string config_file_path = ClientPath::join(this->daemon_home_path,"etc/judge.conf");
 
-    //this->client = new Client(this->settings->BASEURL);
-    this->client = Client::createClient("HustojClient",this->settings->BASEURL);
+        //this->client = new Client(this->settings->BASEURL);
+        this->client = Client::createClient("HustojClient",this->settings->BASEURL);
+    }catch (ClientException &e){
+        e.printException();
+        std::stringstream ss;
+        ss << boost::format("Exception in Daemon::init()") <<"";
+        throw ClientMessageException(ss.str());
+    }catch (...){
+        std::stringstream ss;
+        ss << boost::format("Unknow exception in Daemon::init()") <<"";
+        throw ClientMessageException(ss.str());
+    }
 }
 
 Daemon::~Daemon(){
@@ -50,7 +64,7 @@ Daemon::~Daemon(){
     this->settings = NULL;
 }
 
-bool Daemon::init() {
+bool Daemon::becameDaemonProcess() {
     pid_t pid = fork();
     if(pid < 0){            // fork error
         return false;
@@ -118,7 +132,7 @@ bool Daemon::run() {
     ClientLogger::DEBUG("Run the program in Daemon::run()");
     if(this->daemon== true){                                                   // not run in daemon mode
         ClientLogger::DEBUG("Switch to Daemon mode in Daemon::run()");
-        this->init();
+        this->becameDaemonProcess();
     }
 
     if(this->alreadyRunning()){

@@ -63,7 +63,8 @@ string ClientPath::join(string dir_name, string file_name) {
 }
  */
 
-ClientSettings::ClientSettings() {
+ClientSettings::ClientSettings(const std::string &config_file_path) {
+    this->config_file_path = config_file_path;
     //workdir permission set
     this->process_uid = 1536;
     this->process_gid = 1536;
@@ -128,16 +129,16 @@ bool ClientSettings::parseOneLineToKeyAndValue(std::string line, std::string &ke
     }
 }
 
-void ClientSettings::parseFile(std::string config_file_path) {
+void ClientSettings::init() {
     try{
-        boost::filesystem::path c_path(config_file_path);
+        boost::filesystem::path c_path(this->config_file_path);
         if(!boost::filesystem::exists(c_path)){
             std::stringstream ss;
             ss << boost::format("Configuration file \"%s\" not exist , Using default settings !") % c_path.string() << "";
             throw ClientFileException(ss.str());
         }
 
-        this->config_file_path = config_file_path;
+        //this->config_file_path = config_file_path;
         std::map<std::string,std::string> config_key_value = this->fileContentToKeyValue();
         std::map<std::string,std::string>::iterator itr;
         if((itr = config_key_value.find("BASEURL"))!=config_key_value.end()){

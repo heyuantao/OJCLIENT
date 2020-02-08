@@ -56,8 +56,8 @@ public:
     //string COMPILE_CHROOT;
     std::string API_KEY;        //use in http header for api permission
 public:
-    ClientSettings();
-    void parseFile(std::string config_file_path="./judge.conf");
+    ClientSettings(const std::string &config_file_path="/home/judge/etc/judge.conf");
+    void init();
 private:
     std::map<string,string> fileContentToKeyValue();
     bool parseOneLineToKeyAndValue(std::string line,std::string &key,std::string &value);

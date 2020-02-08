@@ -32,10 +32,11 @@ private:
     Client *client;                  //client instance for web
 public:
     Daemon(std::string daemon_home_path="/home/judge/",bool debug= false);
+    void init();
     ~Daemon();
     bool run();
 private:
-    bool init();
+    bool becameDaemonProcess();
     bool alreadyRunning() ;
     bool work();
     bool runJudge(int solution,int task);

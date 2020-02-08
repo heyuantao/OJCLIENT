@@ -25,6 +25,7 @@ int main(int argc, char** argv) {
 
     try {
         Daemon job("/home/judge/",daemon);
+        job.init();
         job.run();
     } catch (ClientException &e) {
         e.printException();
