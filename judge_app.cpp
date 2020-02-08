@@ -4,8 +4,6 @@
 
 #include <iostream>
 
-#include <boost/filesystem.hpp>
-
 #include "Rest/Client.h"
 #include "Common/Exceptions.h"
 #include "Common/Logger.h"
