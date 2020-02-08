@@ -80,6 +80,10 @@ void Client::login(const std::string &token) {
 bool Client::checkLogin() {
 }
 
+void Client::updateProblemInformation(int problem) {
+
+}
+
 
 
 

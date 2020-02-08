@@ -22,8 +22,10 @@ const std::string HustojClient::problem_judge_api = "/admin/problem_judge.php";
 
 HustojClient::HustojClient(const std::string &base_url){
     this->site_base_url = base_url;
-
 };
+
+HustojClient::~HustojClient() {
+}
 
 /*  Not login ,use token for permission
 bool HustojClient::login(std::string username, std::string password) {
@@ -555,5 +557,7 @@ bool HustojClient::checkLogin() {
         throw ClientMessageException("Exception happen in HustojClient::checkLogin() ");
     }
 }
+
+
 
 

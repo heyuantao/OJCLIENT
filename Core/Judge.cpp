@@ -18,6 +18,7 @@
 #include "../Common/Utils.h"
 #include "../Common/Exceptions.h"
 #include "../Common/Logger.h"
+#include "../Rest/Client.h"
 
 
 using namespace std;
