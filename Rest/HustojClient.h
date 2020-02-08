@@ -2,8 +2,8 @@
 // Created by he_yu on 2020-01-21.
 //
 
-#ifndef OJCLIENT_CLIENT_H
-#define OJCLIENT_CLIENT_H
+#ifndef HUSTOJCLIENT_H
+#define HUSTOJCLIENT_H
 
 #include <iostream>
 #include <map>
