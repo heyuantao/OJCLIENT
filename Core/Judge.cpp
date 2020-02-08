@@ -24,7 +24,6 @@
 using namespace std;
 
 Judge::Judge(std::string judge_home_path, std::string solution, std::string task) {
-    //stringstream ss;
     this->solution = solution;
     this->task = task;
 
@@ -41,7 +40,8 @@ Judge::Judge(std::string judge_home_path, std::string solution, std::string task
 
     this->call_counter = vector<int>(512,0);
 
-
+    this->settings = NULL;
+    this->client = NULL;
 }
 
 void Judge::init(){

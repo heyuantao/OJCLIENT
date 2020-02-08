@@ -36,6 +36,9 @@ Daemon::Daemon(std::string daemon_home_path,bool daemon){
     boost::filesystem::path lock_file_p(this->daemon_home_path);
     lock_file_p /= this->lock_file_name;
     this->lock_file_path = lock_file_p.string();
+
+    this->settings = NULL;
+    this->client = NULL;
 }
 
 void Daemon::init(){

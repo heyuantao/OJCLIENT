@@ -71,8 +71,8 @@ private:
     //use by judge parts
     std::vector<int> call_counter;        //call_counter init with 256 zero
 private:
-    ClientSettings *settings=NULL;
-    Client *client=NULL;
+    ClientSettings *settings;
+    Client *client;
 public:
     Judge(std::string judge_home_path="/home/judge", std::string solution="1000", std::string task="0");
     void init();
