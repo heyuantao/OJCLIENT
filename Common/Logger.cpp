@@ -17,7 +17,7 @@
 
 using namespace std;
 
-std::string ClientLogger::file_name = "/tmp/judge_log.txt";
+//std::string ClientLogger::file_name = "/tmp/judge_log.txt";
 std::stringstream ClientLogger::string_stream;
 bool ClientLogger::debug= false;
 
@@ -27,9 +27,11 @@ void ClientLogger::DEBUG(std::string log_message){
     //syslog(LOG_DEBUG | LOG_DAEMON, "%s", log_message.c_str());
     std::cout << string_stream.str() ;
 
+    /*
     std::ofstream file_logger( ClientLogger::file_name, ios::app);
     file_logger << string_stream.str() ;
     file_logger.close();
+     */
 }
 
 void ClientLogger::WARN(std::string log_message) {
@@ -38,9 +40,11 @@ void ClientLogger::WARN(std::string log_message) {
     //syslog(LOG_WARNING | LOG_DAEMON, "%s", log_message.c_str());
     std::cout << string_stream.str() ;
 
+    /*
     std::ofstream file_logger( ClientLogger::file_name, ios::app);
     file_logger << string_stream.str() ;
     file_logger.close();
+     */
 }
 
 void ClientLogger::ERROR(std::string log_message) {
@@ -49,9 +53,11 @@ void ClientLogger::ERROR(std::string log_message) {
     //syslog(LOG_ERR | LOG_DAEMON, "%s", log_message.c_str());
     std::cout << string_stream.str() ;
 
+    /*
     std::ofstream file_logger( ClientLogger::file_name, ios::app);
     file_logger << string_stream.str() ;
     file_logger.close();
+     */
 }
 
 

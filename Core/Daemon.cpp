@@ -29,7 +29,7 @@ using namespace std;
 
 //ClientSettings Daemon::settings
 
-Daemon::Daemon(std::string daemon_home_path,bool daemon){
+Daemon::Daemon(const std::string &daemon_home_path,bool daemon){
     this->daemon_home_path = daemon_home_path;
     this->daemon = daemon;
     this->lock_file_name = "etc/judge.pid";

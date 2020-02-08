@@ -31,7 +31,7 @@ private:
     ClientSettings *settings;        //setting from judge.conf
     Client *client;                  //client instance for web
 public:
-    Daemon(std::string daemon_home_path="/home/judge/",bool debug= false);
+    Daemon(const std::string &daemon_home_path="/home/judge/",bool debug= false);
     void init();
     ~Daemon();
     bool run();

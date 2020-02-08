@@ -74,7 +74,7 @@ private:
     ClientSettings *settings;
     Client *client;
 public:
-    Judge(std::string judge_home_path="/home/judge", std::string solution="1000", std::string task="0");
+    Judge(const std::string &judge_home_path="/home/judge", const std::string &solution="1000", const std::string &task="0");
     void init();
     ~Judge();
     void run();

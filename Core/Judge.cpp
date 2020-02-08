@@ -23,7 +23,7 @@
 
 using namespace std;
 
-Judge::Judge(std::string judge_home_path, std::string solution, std::string task) {
+Judge::Judge(const std::string &judge_home_path, const std::string &solution, const std::string &task) {
     this->solution = solution;
     this->task = task;
 
