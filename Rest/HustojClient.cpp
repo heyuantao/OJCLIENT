@@ -185,6 +185,7 @@ void HustojClient::getSolution(int solution=1000, std::string work_dir="/tmp", i
 
         // Generate the dist source file path
         boost::filesystem::path work_dir_path(work_dir);
+
         work_dir_path /= string("Main.") + this->getLanguageExtensionById(language);
         std::string filename_path = work_dir_path.string();
 
@@ -445,7 +446,7 @@ void HustojClient::getTestFile(int problem, std::string data_dir) {
     ClientLogger::DEBUG("Download file finished in HustojClient::getTestFile");
 
 }
-
+/*
 string HustojClient::getLanguageExtensionById(int lang) {
     if((lang<0)||(lang>=HustojClient::language_extension.size())){
         std::stringstream ss;
@@ -454,7 +455,7 @@ string HustojClient::getLanguageExtensionById(int lang) {
     }
     return HustojClient::language_extension[lang];
 }
-
+*/
 /*
 int HustojClient::getLanguageIdByExtension(string ext) {
     vector<string>::const_iterator itr = std::find(HustojClient::language_extension.begin(), HustojClient::language_extension.end(), ext);

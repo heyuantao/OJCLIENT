@@ -17,12 +17,12 @@ add_executable(JUDGE judge_app.cpp
         Common/Utils.h Common/Utils.cpp Common/Exceptions.h Common/Exceptions.cpp Common/Logger.cpp Common/Logger.h
         Core/Daemon.cpp Core/Daemon.h Core/Judge.h Core/Judge.cpp Core/SafeSysCall.h)
 
-add_executable(TESTREST Test/test_rest.cpp
-        Rest/Rest.cpp Rest/Rest.h Rest/Client.cpp Rest/Client.h Rest/HustojClient.cpp Rest/HustojClient.h
-        Common/Utils.h Common/Utils.cpp Common/Exceptions.h Common/Exceptions.cpp Common/Logger.cpp Common/Logger.h)
+#add_executable(TESTREST Test/test_rest.cpp
+#        Rest/Rest.cpp Rest/Rest.h Rest/Client.cpp Rest/Client.h Rest/HustojClient.cpp Rest/HustojClient.h
+#        Common/Utils.h Common/Utils.cpp Common/Exceptions.h Common/Exceptions.cpp Common/Logger.cpp Common/Logger.h)
 
 
-target_link_libraries(TESTREST libcpprest.so boost_filesystem boost_system ssl crypto)
+#target_link_libraries(TESTREST libcpprest.so boost_filesystem boost_system ssl crypto)
 
 target_link_libraries(DAEMON libcpprest.so boost_filesystem boost_system ssl crypto)
 

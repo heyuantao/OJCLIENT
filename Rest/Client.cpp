@@ -12,10 +12,33 @@
 #include "../Common/Utils.h"
 #include "../Common/Exceptions.h"
 #include "../Common/Logger.h"
+#include "HustojClient.h"
 
 using namespace std;
 
 std::vector<std::string> const Client::language_extension = { "c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "scm","c","cc","lua","js","go" };
+
+string Client::getLanguageExtensionById(int lang) {
+    if((lang<0)||(lang>=Client::language_extension.size())){
+        std::stringstream ss;
+        ss << boost::format("Find lang id %d error in Client::getLanguageExtensionById()") % lang << "";
+        throw ClientContainerException(ss.str());
+    }
+    return Client::language_extension[lang];
+}
+
+Client* Client::createClient(const string &client_name,const string &base_url) {
+    //if new client add ,register it here
+    if(client_name=="HustojClient"){
+        return new HustojClient(base_url);
+    }
+    // if not match just return the default
+    std::stringstream ss;
+    ss << boost::format("No client_name match %s in Client::getClient() and return the default Client") % client_name << "";
+    ClientLogger::ERROR(ss.str());
+    return new HustojClient(base_url);
+}
+
 
 Client::Client(const std::string &base_url){
 };
@@ -48,9 +71,6 @@ void Client::addRuningErrorInformation(int solution) {
 void Client::getTestFile(int problem, std::string data_dir) {
 }
 
-string Client::getLanguageExtensionById(int lang) {
-}
-
 void Client::updateUserInformation(const std::string username) {
 }
 
@@ -59,5 +79,7 @@ void Client::login(const std::string &token) {
 
 bool Client::checkLogin() {
 }
+
+
 
 

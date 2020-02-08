@@ -14,11 +14,12 @@
 #include <cctype>
 #include <iomanip>
 
-#include "./Rest.h"
+#include "Client.h"
+#include "Rest.h"
 
 using namespace std;
 
-class HustojClient{
+class HustojClient : public Client{
 private:
     static const std::string check_login_api;            // = "/admin/problem_judge.php";
     static const std::string problem_judge_api;          // = "/admin/problem_judge.php";

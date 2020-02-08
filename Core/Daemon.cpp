@@ -39,7 +39,8 @@ Daemon::Daemon(std::string daemon_home_path,bool daemon){
     this->settings = new ClientSettings();
     this->settings->parseFile("/home/judge/etc/judge.conf");  //string config_file_path = ClientPath::join(this->daemon_home_path,"etc/judge.conf");
 
-    this->client = new Client(this->settings->BASEURL);
+    //this->client = new Client(this->settings->BASEURL);
+    this->client = Client::createClient("HustojClient",this->settings->BASEURL);
 }
 
 Daemon::~Daemon(){

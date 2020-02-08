@@ -21,6 +21,8 @@ public:
     static const std::vector<std::string> language_extension ;
 public:
     static std::string getLanguageExtensionById(int lang);
+private:
+    static Client* createClient(const string &client_name,const string &base_url);            //factory method
 public:
     Client(const std::string &site_base_url="http://127.0.0.1");
     virtual ~Client();

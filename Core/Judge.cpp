@@ -43,7 +43,8 @@ Judge::Judge(std::string judge_home_path, std::string solution, std::string task
     this->settings = new ClientSettings();
     this->settings->parseFile("/home/judge/etc/judge.conf");
 
-    this->client = new Client(this->settings->BASEURL);
+    //this->client = new Client(this->settings->BASEURL);
+    this->client = Client::createClient("HustojClient",this->settings->BASEURL);
 }
 
 Judge::~Judge() {
