@@ -28,8 +28,8 @@ private:
     std::string daemon_home_path;
     std::string lock_file_name;
     std::string lock_file_path;
-    ClientSettings *settings;        //setting from judge.conf
-    Client *client;                  //client instance for web
+    ClientSettings *settings=NULL;        //setting from judge.conf
+    Client *client=NULL;                  //client instance for web
 public:
     Daemon(std::string daemon_home_path="/home/judge/",bool debug= false);
     void init();
