@@ -41,11 +41,26 @@ Judge::Judge(std::string judge_home_path, std::string solution, std::string task
 
     this->call_counter = vector<int>(512,0);
 
-    this->settings = new ClientSettings();
-    this->settings->parseFile("/home/judge/etc/judge.conf");
 
-    //this->client = new Client(this->settings->BASEURL);
-    this->client = Client::createClient("HustojClient",this->settings->BASEURL);
+}
+
+void Judge::init(){
+    try{
+        this->settings = new ClientSettings("/home/judge/etc/judge.conf");
+        this->settings->init();
+
+        //this->client = new Client(this->settings->BASEURL);
+        this->client = Client::createClient("HustojClient",this->settings->BASEURL);
+    }catch (ClientException &e){
+        std::stringstream ss;
+        e.printException();
+        ss << boost::format("Exception happen in Judge::init()") << "";
+        throw ClientMessageException(ss.str());
+    }catch (...){
+        std::stringstream ss;
+        ss << boost::format("Unknow exception happen in Judge::init()") << "";
+        throw ClientMessageException(ss.str());
+    }
 }
 
 Judge::~Judge() {

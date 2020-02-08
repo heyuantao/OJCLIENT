@@ -29,6 +29,7 @@ int main(int argc, char** argv) {
 
     try{
         Judge judge("/home/judge", solution, task);
+        judge.init();
         judge.run();
     }catch (ClientException &e){
         e.printException();

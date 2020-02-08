@@ -75,6 +75,7 @@ private:
     Client *client=NULL;
 public:
     Judge(std::string judge_home_path="/home/judge", std::string solution="1000", std::string task="0");
+    void init();
     ~Judge();
     void run();
     bool compareFile(const std::string &source_file_path, const std::string &dist_file_path);
