@@ -2,8 +2,8 @@
 // Created by he_yu on 2020-01-21.
 //
 
-#ifndef HUSTOJCLIENT_H
-#define HUSTOJCLIENT_H
+#ifndef OJCLIENT_REST_HUSTOJCLIENT_H
+#define OJCLIENT_REST_HUSTOJCLIENT_H
 
 #include <iostream>
 #include <map>
@@ -66,4 +66,4 @@ private:
 };
 
 
-#endif //OJCLIENT_CLIENT_H
+#endif //OJCLIENT_REST_HUSTOJCLIENT_H
