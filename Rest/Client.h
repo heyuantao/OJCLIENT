@@ -23,6 +23,7 @@ public:
     static std::string getLanguageExtensionById(int lang);
 public:
     Client(const std::string &site_base_url="http://127.0.0.1");
+    virtual ~Client();
     virtual void login(const string &token);                                                            //no exception, just set the api token
     virtual bool checkLogin();                                                                          //exception, send the api to check if is login
     virtual void updateSolution(int solution,int result,int time,int memory,double pass_rate);          //exception

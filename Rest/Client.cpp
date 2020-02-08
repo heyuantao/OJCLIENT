@@ -20,6 +20,9 @@ std::vector<std::string> const Client::language_extension = { "c", "cc", "pas", 
 Client::Client(const std::string &base_url){
 };
 
+Client::~Client(){
+}
+
 std::vector<std::string> Client::getJobs(){
 }
 

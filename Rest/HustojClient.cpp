@@ -15,25 +15,24 @@
 
 using namespace std;
 
-//const std::string Client::login_api = "/login.php";
-const std::string Client::check_login_api = "/admin/problem_judge.php";
-const std::string Client::problem_judge_api = "/admin/problem_judge.php";
+const std::string HustojClient::check_login_api = "/admin/problem_judge.php";
+const std::string HustojClient::problem_judge_api = "/admin/problem_judge.php";
 
-std::vector<std::string> const Client::language_extension = { "c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "scm","c","cc","lua","js","go" };
+//std::vector<std::string> const HustojClient::language_extension = { "c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "scm","c","cc","lua","js","go" };
 
-Client::Client(const std::string &base_url){
+HustojClient::HustojClient(const std::string &base_url){
     this->site_base_url = base_url;
 
 };
 
 /*  Not login ,use token for permission
-bool Client::login(std::string username, std::string password) {
+bool HustojClient::login(std::string username, std::string password) {
     this->username = username;
     this->password = password;
 }*/
 /*
-bool Client::checkLogin() {
-    std::string url = this->getHttpApiUrl(Client::check_login_api);
+bool HustojClient::checkLogin() {
+    std::string url = this->getHttpApiUrl(HustojClient::check_login_api);
 
     HttpFormData form;
     form.addItem("checklogin","1");
@@ -47,10 +46,10 @@ bool Client::checkLogin() {
     }
 }*/
 
-std::vector<std::string> Client::getJobs(){
+std::vector<std::string> HustojClient::getJobs(){
     std::vector<std::string> job_list;
     try{
-        std::string url = this->getHttpApiUrl(Client::problem_judge_api);  //string url = "http://ww.syslab.org/sdf";
+        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);  //string url = "http://ww.syslab.org/sdf";
         HttpFormData form;
         form.addItem("getpending","1");
         form.addItem("oj_lang_set","0,1,2,3");
@@ -66,7 +65,7 @@ std::vector<std::string> Client::getJobs(){
     }
 }
 
-Response Client::readCommandOutput(std::string command){
+Response HustojClient::readCommandOutput(std::string command){
     std::string final_string ="";
     char buffer[512];
     FILE *file=NULL;
@@ -91,7 +90,7 @@ Response Client::readCommandOutput(std::string command){
 }
 
 /* old version
-Response Client::post(std::string url,HttpFormData form_data){
+Response HustojClient::post(std::string url,HttpFormData form_data){
     std::stringstream ss;
     std::string form_data_string = form_data.toFormString();
     //string cmd = "wget --post-data=\""+form_data_string+"\" -q -O - "+"\""+url+"\"";
@@ -105,7 +104,7 @@ Response Client::post(std::string url,HttpFormData form_data){
 }
  */
 
-Response Client::post(std::string url,HttpFormData form_data){
+Response HustojClient::post(std::string url,HttpFormData form_data){
     //return WgetRest::post(url,form_data);
     std::stringstream ss;
 
@@ -114,19 +113,19 @@ Response Client::post(std::string url,HttpFormData form_data){
     }catch (ClientException &e) {
         e.printException();
         ss.str("");
-        ss << boost::format("Exception happen in post \"%s\" with data \"%s\" in Client::post()") % url % form_data.toFormString() << "";
+        ss << boost::format("Exception happen in post \"%s\" with data \"%s\" in HustojClient::post()") % url % form_data.toFormString() << "";
         throw ClientMessageException(ss.str());
     }catch (...){
         ss.str("");
-        ss << boost::format("Unknow exception happen in post \"%s\" with data \"%s\" in Client::post()") % url % form_data.toFormString() << "";
+        ss << boost::format("Unknow exception happen in post \"%s\" with data \"%s\" in HustojClient::post()") % url % form_data.toFormString() << "";
         throw ClientMessageException(ss.str());
     }
 }
 
 //result = 0 mean is judge,4 is success status
-void Client::updateSolution(int solution=1001, int result=0, int time=0, int memory=0, double pass_rate=0.0){
+void HustojClient::updateSolution(int solution=1001, int result=0, int time=0, int memory=0, double pass_rate=0.0){
     try{
-        std::string url = this->getHttpApiUrl(Client::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
 
         int sim=0;
         int sim_id=0;
@@ -148,7 +147,7 @@ void Client::updateSolution(int solution=1001, int result=0, int time=0, int mem
     }
 }
 
-void Client::addCompileErrorInformation(int solution) {
+void HustojClient::addCompileErrorInformation(int solution) {
     try{
         std::string compile_error_file = "ce.txt";
         std::ifstream input_stream;
@@ -160,7 +159,7 @@ void Client::addCompileErrorInformation(int solution) {
 
         std::string url_encode_ce_file_content = this->url_encoder(ce_file_content);
 
-        std::string url = this->getHttpApiUrl(Client::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         HttpFormData form;
         form.addItem("addceinfo","1");
         form.addItem("sid",to_string(solution));
@@ -176,9 +175,9 @@ void Client::addCompileErrorInformation(int solution) {
     }
 }
 
-void Client::getSolution(int solution=1000, std::string work_dir="/tmp", int language=0) {
+void HustojClient::getSolution(int solution=1000, std::string work_dir="/tmp", int language=0) {
     try{
-        std::string url = this->getHttpApiUrl(Client::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         HttpFormData form;
         form.addItem("getsolution","1");
         form.addItem("sid",to_string(solution));
@@ -200,7 +199,7 @@ void Client::getSolution(int solution=1000, std::string work_dir="/tmp", int lan
     }
 }
 
-std::string Client::getHttpApiUrl(const std::string &api) {
+std::string HustojClient::getHttpApiUrl(const std::string &api) {
     std::stringstream ss;
     std::string url;
     ss << boost::format("%s%s") % this->site_base_url % api << "";
@@ -208,9 +207,9 @@ std::string Client::getHttpApiUrl(const std::string &api) {
     return url;
 }
 
-void Client::getSolutionInformation(int solution, int &problem, std::string &username, int &lang) {
+void HustojClient::getSolutionInformation(int solution, int &problem, std::string &username, int &lang) {
     try{
-        std::string url = this->getHttpApiUrl(Client::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         HttpFormData form;
         form.addItem("getsolutioninfo","1");
         form.addItem("sid",to_string(solution));
@@ -228,15 +227,15 @@ void Client::getSolutionInformation(int solution, int &problem, std::string &use
     }catch (ClientException &e){
         e.printException();
         std::stringstream ss ;
-        ss << boost::format("Error happen in Client::getSolutionInformation") <<"";
+        ss << boost::format("Error happen in HustojClient::getSolutionInformation") <<"";
         throw ClientMessageException(ss.str());
     }catch (...){
-        std::cout <<"Error in Client::getSolutionInformation"<<std::endl;
+        std::cout <<"Error in HustojClient::getSolutionInformation"<<std::endl;
     }
 }
 
 //Response is split by next line ,parse it into vector<string>
-std::vector<std::string> Client::parseResponseString(std::string content) {
+std::vector<std::string> HustojClient::parseResponseString(std::string content) {
     std::vector<std::string> string_vector;
     std::istringstream stream(content);
     for (std::string item; stream >> item; ){
@@ -245,9 +244,9 @@ std::vector<std::string> Client::parseResponseString(std::string content) {
     return string_vector;
 }
 
-void Client::getProblemInformation(int problem, int &time_limit, int &mem_limit, int &isspj) {
+void HustojClient::getProblemInformation(int problem, int &time_limit, int &mem_limit, int &isspj) {
     try{
-        std::string url = this->getHttpApiUrl(Client::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         HttpFormData form;
         form.addItem("getprobleminfo","1");
         form.addItem("pid",to_string(problem));
@@ -266,7 +265,7 @@ void Client::getProblemInformation(int problem, int &time_limit, int &mem_limit,
     }
 }
 
-string Client::url_encoder(const std::string &value) {
+string HustojClient::url_encoder(const std::string &value) {
     std::ostringstream escaped;
     escaped.fill('0');
     escaped << hex;
@@ -289,7 +288,7 @@ string Client::url_encoder(const std::string &value) {
     return escaped.str();
 }
 
-void Client::addRuningErrorInformation(int solution) {
+void HustojClient::addRuningErrorInformation(int solution) {
     try{
         std::string run_error_file = "error.out";
         std::ifstream input_stream;
@@ -301,7 +300,7 @@ void Client::addRuningErrorInformation(int solution) {
 
         std::string url_encode_re_file_content = this->url_encoder(re_file_content);
 
-        std::string url = this->getHttpApiUrl(Client::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         HttpFormData form;
         form.addItem("addreinfo","1");
         form.addItem("sid",to_string(solution));
@@ -316,9 +315,9 @@ void Client::addRuningErrorInformation(int solution) {
     }
 }
 
-void Client::getTestDataList(int problem, std::vector<std::string> &data_list) {
+void HustojClient::getTestDataList(int problem, std::vector<std::string> &data_list) {
     try{
-        std::string url = this->getHttpApiUrl(Client::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         HttpFormData form;
         form.addItem("gettestdatalist","1");
         form.addItem("pid",to_string(problem));
@@ -334,9 +333,9 @@ void Client::getTestDataList(int problem, std::vector<std::string> &data_list) {
     }
 }
 
-void Client::getTestDataData(int problem, std::string filename, std::string & filecontent) {
+void HustojClient::getTestDataData(int problem, std::string filename, std::string & filecontent) {
     try{
-        std::string url = this->getHttpApiUrl(Client::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         std::stringstream stream;
         stream << problem << "/" << filename;
         HttpFormData form;
@@ -355,9 +354,9 @@ void Client::getTestDataData(int problem, std::string filename, std::string & fi
     }
 }
 
-void Client::getTestDataDate(int problem, std::string filename, std::string &date) {
+void HustojClient::getTestDataDate(int problem, std::string filename, std::string &date) {
     try{
-        std::string url = this->getHttpApiUrl(Client::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         std::stringstream stream;
         stream << problem << "/" << filename;
         HttpFormData form;
@@ -375,7 +374,7 @@ void Client::getTestDataDate(int problem, std::string filename, std::string &dat
     }
 }
 
-void Client::getTestFile(int problem, std::string data_dir) {
+void HustojClient::getTestFile(int problem, std::string data_dir) {
     std::vector<std::string> test_file_list;
     std::vector<std::string> test_file_path_string_list;
     std::vector<std::string> download_file_list;
@@ -443,32 +442,32 @@ void Client::getTestFile(int problem, std::string data_dir) {
         output_stream << file_content;
         output_stream.close();
     }
-    ClientLogger::DEBUG("Download file finished in Client::getTestFile");
+    ClientLogger::DEBUG("Download file finished in HustojClient::getTestFile");
 
 }
 
-string Client::getLanguageExtensionById(int lang) {
-    if((lang<0)||(lang>=Client::language_extension.size())){
+string HustojClient::getLanguageExtensionById(int lang) {
+    if((lang<0)||(lang>=HustojClient::language_extension.size())){
         std::stringstream ss;
-        ss << boost::format("Find lang id %d error in Client::getLanguageExtensionById !") % lang << "";
+        ss << boost::format("Find lang id %d error in HustojClient::getLanguageExtensionById !") % lang << "";
         throw ClientContainerException(ss.str());
     }
-    return Client::language_extension[lang];
+    return HustojClient::language_extension[lang];
 }
 
 /*
-int Client::getLanguageIdByExtension(string ext) {
-    vector<string>::const_iterator itr = std::find(Client::language_extension.begin(), Client::language_extension.end(), ext);
-    if(itr==Client::language_extension.end()){
+int HustojClient::getLanguageIdByExtension(string ext) {
+    vector<string>::const_iterator itr = std::find(HustojClient::language_extension.begin(), HustojClient::language_extension.end(), ext);
+    if(itr==HustojClient::language_extension.end()){
         stringstream ss;
-        ss << boost::format("Find lang ext %s error in Client::getLanguageIdByExtension !") % ext << "";
+        ss << boost::format("Find lang ext %s error in HustojClient::getLanguageIdByExtension !") % ext << "";
         throw ClientContainerException(ss.str());
     }
-    return (itr-Client::language_extension.begin());
+    return (itr-HustojClient::language_extension.begin());
 }
 */
 
-void Client::createDirectoryIfNotExists(const std::string &dir_path_string) {
+void HustojClient::createDirectoryIfNotExists(const std::string &dir_path_string) {
     std::string current_path_string = dir_path_string;
     std::vector<std::string> path_string_to_create_list;
 
@@ -500,9 +499,9 @@ void Client::createDirectoryIfNotExists(const std::string &dir_path_string) {
     }
 }
 
-void Client::updateProblemInformation(int problem) {
+void HustojClient::updateProblemInformation(int problem) {
     try{
-        std::string url = this->getHttpApiUrl(Client::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         std::stringstream stream;
 
         HttpFormData form;
@@ -511,14 +510,14 @@ void Client::updateProblemInformation(int problem) {
 
         Response res = this->post(url,form);
     }catch (ClientException &e){
-        std::cout<<"Exception Happen in Client::updateProblemInformation !"<<endl;
+        std::cout<<"Exception Happen in HustojClient::updateProblemInformation !"<<endl;
         e.printException();
     }
 }
 
-void Client::updateUserInformation(const std::string username) {
+void HustojClient::updateUserInformation(const std::string username) {
     try{
-        std::string url = this->getHttpApiUrl(Client::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         std::stringstream stream;
 
         HttpFormData form;
@@ -527,17 +526,17 @@ void Client::updateUserInformation(const std::string username) {
 
         Response res = this->post(url,form);
     }catch (ClientException &e){
-        std::cout<<"Exception Happen in Client::updateUserInformation !"<<endl;
+        std::cout<<"Exception Happen in HustojClient::updateUserInformation !"<<endl;
         e.printException();
     }
 }
 
-void Client::login(const std::string &token) {
+void HustojClient::login(const std::string &token) {
     CasablancaRest::api_key=token;
 }
 
-bool Client::checkLogin() {
-    std::string url = this->getHttpApiUrl(Client::check_login_api);
+bool HustojClient::checkLogin() {
+    std::string url = this->getHttpApiUrl(HustojClient::check_login_api);
     HttpFormData form;
     std::string result;
 
@@ -552,7 +551,7 @@ bool Client::checkLogin() {
         }
     }catch (ClientException &e){
         e.printException();
-        throw ClientMessageException("Exception happen in Client::checkLogin() ");
+        throw ClientMessageException("Exception happen in HustojClient::checkLogin() ");
     }
 }
 

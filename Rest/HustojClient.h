@@ -18,37 +18,37 @@
 
 using namespace std;
 
-class Client{
+class HustojClient{
 private:
-    //static const std::string login_api;
     static const std::string check_login_api;            // = "/admin/problem_judge.php";
     static const std::string problem_judge_api;          // = "/admin/problem_judge.php";
-    static const std::vector<std::string> language_extension ;
+//    static const std::vector<std::string> language_extension ;
 
 private:
     std::string site_base_url = "";
 
-public:
-    static std::string getLanguageExtensionById(int lang);
+//public:
+//    static std::string getLanguageExtensionById(int lang);
 
 public:
-    Client(const std::string &site_base_url="http://127.0.0.1");
+    HustojClient(const std::string &site_base_url="http://127.0.0.1");
+    virtual ~HustojClient();
 
-    void login(const string &token);                                                            //no exception, just set the api token
-    bool checkLogin();                                                                          //exception, send the api to check if is login
-    void updateSolution(int solution,int result,int time,int memory,double pass_rate);          //exception
-    void getSolution(int solution,std::string work_dir,int language);                           //exception
-    void getSolutionInformation(int solution,int &problem,std::string &username,int &lang);     //exception
-    void addCompileErrorInformation(int solution);                                              //exception
-    void addRuningErrorInformation(int solution);                                               //exception
+    virtual void login(const string &token);                                                            //no exception, just set the api token
+    virtual bool checkLogin();                                                                          //exception, send the api to check if is login
+    virtual void updateSolution(int solution,int result,int time,int memory,double pass_rate);          //exception
+    virtual void getSolution(int solution,std::string work_dir,int language);                           //exception
+    virtual void getSolutionInformation(int solution,int &problem,std::string &username,int &lang);     //exception
+    virtual void addCompileErrorInformation(int solution);                                              //exception
+    virtual void addRuningErrorInformation(int solution);                                               //exception
     //void addDifferentInformation(int solution);
     //void addCustomOutputInformation(int solution);
     //void getCustomInput(int solution,std::string work_dir);
-    void updateUserInformation(const std::string username);                                     //exception
-    void getProblemInformation(int problem, int &time_limit, int &mem_limit, int &isspj);       //exception
-    void updateProblemInformation(int problem);                                                 //exception
-    std::vector<std::string> getJobs();                                                         //exception
-    void getTestFile(int problem,std::string data_dir);                                         //exception
+    virtual void updateUserInformation(const std::string username);                                     //exception
+    virtual void getProblemInformation(int problem, int &time_limit, int &mem_limit, int &isspj);       //exception
+    virtual void updateProblemInformation(int problem);                                                 //exception
+    virtual std::vector<std::string> getJobs();                                                         //exception
+    virtual void getTestFile(int problem,std::string data_dir);                                         //exception
 
 private:
     void getTestDataList(int problem, std::vector<std::string> &data_list);                           //exception
