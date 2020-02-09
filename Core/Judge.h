@@ -65,6 +65,7 @@ class Judge{
 private:
     std::string solution;
     std::string task;
+    bool debug;
     std::string judge_home_path;
     std::string judge_work_path;
     std::string judge_data_path;
@@ -74,7 +75,7 @@ private:
     ClientSettings *settings;
     Client *client;
 public:
-    Judge(const std::string &judge_home_path="/home/judge", const std::string &solution="1000", const std::string &task="0");
+    Judge(const std::string &judge_home_path="/home/judge", const std::string &solution="1000", const std::string &task="0", bool debug= false);
     void init();
     ~Judge();
     void run();

@@ -23,9 +23,10 @@
 
 using namespace std;
 
-Judge::Judge(const std::string &judge_home_path, const std::string &solution, const std::string &task) {
+Judge::Judge(const std::string &judge_home_path, const std::string &solution, const std::string &task, bool debug) {
     this->solution = solution;
     this->task = task;
+    this->debug = debug;                                    //if true ,the program will display debug message and not clear the task working directory
 
     boost::filesystem::path judge_home(judge_home_path);
     this->judge_home_path = judge_home.string();
