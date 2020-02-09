@@ -180,9 +180,11 @@ void Judge::run() {
     if((ac_flag==JudgeResult::WA)&&(final_ac_flag==JudgeResult::WA)){
         // add diff info latter ,work to be done here
     }
-    //clear the work dir
-    //this->cleanWorkDirectory(this->judge_work_path);
-    ClientLogger::DEBUG("Clear work for solution id "+this->solution+" in Judge:run()");
+    //clear the work dir if the debug flag is true
+    if(this->debug== false){
+        this->cleanWorkDirectory(this->judge_work_path);
+        ClientLogger::DEBUG("Clear work for solution id "+this->solution+" in Judge:run()");
+    }
 }
 
 void Judge::cleanWorkDirectory(const std::string &dir) {
@@ -253,7 +255,7 @@ std::string Judge::processString(const std::string &content) {
                 latest_char_is_space = true;
                 continue;
             }
-            if( (char_in_string=='\t')&&(latest_char_is_space== false)){
+            if( (char_in_string=='\t')&&(latest_char_is_space== false) ){
                 line_ss << ' ';
                 latest_char_is_space = true;
                 continue;
