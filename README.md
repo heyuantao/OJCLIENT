@@ -25,3 +25,5 @@ JUDGE 1001 0
 其中1001为solution的编号,0为任务编号，即该任务在/home/judge/run0/的目录下运行
 
 5.创建配置文件，即创建"/home/judge/etc/judge.conf"。"DAEMON"和"JUDGE"会使用这个配置文件来与外部系统进行通信。
+
+说明：java版本为openjdk-8-jdk

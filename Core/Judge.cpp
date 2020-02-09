@@ -516,9 +516,9 @@ bool Judge::compile(int lang, const std::string &workdir) {
         //this->executeSystemCommand("/bin/umount -f bin usr lib lib64 etc/alternatives proc dev 2>&1 >/dev/null");
 
 
-        this->executeSystemCommand("/bin/umount -f bin usr lib lib64 etc/alternatives proc 2>&1 >/dev/null");
+        this->executeSystemCommandWithoutException("/bin/umount -f bin usr lib lib64 etc/alternatives proc 2>&1 >/dev/null");
         if(lang>2 && lang!=10 && lang!=13 && lang!=14){
-            this->executeSystemCommand("/bin/umount -f dev 2>&1 >/dev/null");
+            this->executeSystemCommandWithoutException("/bin/umount -f dev 2>&1 >/dev/null");
         }
 
         //ss.str("");
@@ -1158,6 +1158,7 @@ void Judge::watchSolution(pid_t process_id, int task, int lang, int &ac_flag, in
 
         if ((lang < 4 || lang == 9) && this->getFileSize(error_file_path.string()) ) {
             ac_flag = JudgeResult::RE;
+            //std::cout<<"Test Re here"<<std::endl;
             ptrace(PTRACE_KILL, process_id, NULL, NULL);
             break;
         }
@@ -1279,7 +1280,7 @@ void Judge::judgeSolution(int &ac_flag, int problem, int lang, int &memory_peak,
     out_file_path.replace_extension("out");                           //  /home/judge/data/100X/test0.out
 
     ClientLogger::DEBUG("Compare \""+user_file_path.string() +"\" and \""+out_file_path.string() +"\" in Judge:judgeSolution");
-
+    //std::cout<<"Before Current flags:"<<JudgeResult::getStatusDescribeById(ac_flag)<<endl;
     bool compare_result= false;
     if( (ac_flag==JudgeResult::AC)&&(used_time>time_limit*1000) ){
         ac_flag = JudgeResult::TL;
@@ -1307,6 +1308,7 @@ void Judge::judgeSolution(int &ac_flag, int problem, int lang, int &memory_peak,
     }else{
         ClientLogger::DEBUG("Two file \""+user_file_path.string() +"\" and \""+out_file_path.string() +"\" have same content Judge:judgeSolution" );
     }
+    //std::cout<<"After Current flags:"<<JudgeResult::getStatusDescribeById(ac_flag)<<endl;
 }
 
 void Judge::fixJavaMistakeJudge(int &ac_flag, int &memory_peak, int memory_limit) {
