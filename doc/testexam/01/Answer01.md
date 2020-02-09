@@ -1,5 +1,6 @@
 
 ###Accepted
+答案全部正确
 ``` C
 #include<stdio.h> 
 #include<math.h>
