@@ -18,7 +18,7 @@ apt-get install libboost-dev libboost-system-dev libboost-filesystem-dev libcppr
 
 3.设置权限，即确保"judge"用户对"/home/judge/runx"（x为某个数字）有写权限  
 
-4.编译软件，软件使用cmake进行构建，编译完成后会生成"DAEMON"和"JUDGE"两个可执行程序,把这两个文件复制到"/usr/local/bin/"目录下,并测试下是否能判题。该文件内容参考doc/judge.conf.example。
+4.编译软件，软件使用cmake进行构建，编译完成后会生成"DAEMON"和"JUDGE"两个可执行程序,把这两个文件复制到"/usr/local/bin/"目录下,并测试下是否能判题。该文件内容参考doc/configuration/judge.conf.example。
 
 JUDGE 1001 0 
 
