@@ -1,4 +1,6 @@
-### Compile Attack
+### 针对判题机的攻击性代码
+
+### Compile Attack 编译攻击
 引入一个永远读不完的文件，导致编译过程卡住
 ```C
 #include</dev/random> 
@@ -7,7 +9,7 @@ int main(){
 }
 ```
 
-### Compile Attack
+### Compile Attack 编译攻击
 在编译的时候生成一个大文件，该测试在编译时未发现异常
 
 ```C
@@ -18,7 +20,7 @@ int main(){
 }
 ```
 
-### Compile Attack
+### Compile Attack 编译攻击
 调用系统的危险代码
 
 ```C
