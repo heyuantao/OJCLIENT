@@ -92,6 +92,13 @@ void Judge::run() {
     solution= std::stoi(this->solution);
     this->client->getSolutionInformation(solution,problem,username,lang);
 
+    ClientLogger::DEBUG("Check if solution id "+this->solution+" is in language set Judge::run()");
+    if(this->settings->isInLanguageSet(lang)== false){
+        ClientLogger::ERROR("Solution id "+this->solution+" not in support language set \""+this->settings->LANG_SET+"\" Judge::run()");
+        this->client->updateSolution(solution, JudgeResult::WA, 0, 0, 0.0);
+        return;
+    }
+
     ClientLogger::DEBUG("Get problem id "+to_string(problem)+" information in Judge::run()");
     this->client->getProblemInformation(problem,time_limit,memory_limit,is_special_judge);
 
