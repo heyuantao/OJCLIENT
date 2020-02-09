@@ -74,7 +74,7 @@ Judge::~Judge() {
 
 void Judge::run() {
     int solution,problem,lang;                      //solution id,problem id,lang
-    std::string username;                                //user_id
+    std::string username;                           //user_id
     int time_limit,memory_limit,is_special_judge;   //problem other settings
 
 
@@ -180,6 +180,13 @@ void Judge::run() {
     if((ac_flag==JudgeResult::WA)&&(final_ac_flag==JudgeResult::WA)){
         // add diff info latter ,work to be done here
     }
+
+    //update user and problem info
+
+    this->client->updateUserInformation(username);
+    this->client->updateProblemInformation(problem);
+    ClientLogger::DEBUG("Update user and problem information for solution id "+this->solution+" in Judge::run()");
+
     //clear the work dir if the debug flag is true
     if(this->debug== false){
         this->cleanWorkDirectory(this->judge_work_path);
