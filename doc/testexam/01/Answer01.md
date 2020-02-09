@@ -1,6 +1,6 @@
 
 ###Accepted
-答案全部正确
+答案(C的版本)
 ``` C
 #include<stdio.h> 
 #include<math.h>
@@ -16,7 +16,8 @@ int main()
 	return 0;
 }
 ```
-
+###Accepted
+答案(JAVA的版本)
 ```JAVA
 import java.util.*;
 import java.lang.Math;
