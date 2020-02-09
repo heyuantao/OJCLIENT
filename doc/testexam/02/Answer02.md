@@ -1,7 +1,7 @@
 ###Java代码
 ```JAVA
 import java.util.*;
- public class Main{
+public class Main{
  	public static void main(String args[]){
  		Scanner cin = new Scanner(System.in);
  		int a, b;
@@ -10,7 +10,7 @@ import java.util.*;
  			System.out.println(a + b);
  		}
  	}
- }
+}
 ```
 
 int main(){
