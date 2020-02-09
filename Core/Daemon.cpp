@@ -163,7 +163,7 @@ bool Daemon::work() {
     std::vector<int>::iterator find_task_itr;
 
     ss.str("");
-    ss << boost::format("Get %d job in Daemon::work") % job_string_list.size() << "";
+    ss << boost::format("Get %d job in Daemon::work()") % job_string_list.size() << "";
     ClientLogger::DEBUG(ss.str());
 
     for(job_itr = job_string_list.begin();job_itr!=job_string_list.end();job_itr++){
@@ -205,7 +205,7 @@ bool Daemon::work() {
     }
 
     ss.str("");
-    ss << boost::format("Finish %d solutions in Daemon::work") % running << "";
+    ss << boost::format("Finish %d solutions in Daemon::work()") % running << "";
     ClientLogger::DEBUG(ss.str());
 
     return true;
@@ -214,7 +214,7 @@ bool Daemon::work() {
 bool Daemon::runJudge(int solution,int task) {
     std::stringstream ss;
     ss.str("");
-    ss << boost::format("Start client with solution %d at solt %d in Daemon::runJudge") % solution % task << "";
+    ss << boost::format("Start client with solution %d at solt %d in Daemon::runJudge()") % solution % task << "";
     ClientLogger::DEBUG(ss.str());
 
     struct rlimit LIM;

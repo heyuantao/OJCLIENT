@@ -218,7 +218,7 @@ void Judge::executeSystemCommand(const std::string &cmd) {
     int return_status = system(cmd.c_str());
     if(return_status!=0){
         std::stringstream ss;
-        ss << boost::format("Can not run: %s") % cmd << "";
+        ss << boost::format("Can not run: \"%s\" in Judge::executeSystemCommand()") % cmd << "";
         throw ClientRunCommandException(ss.str());
     }
 }
@@ -362,7 +362,7 @@ void Judge::handleLangageResource(int lang, int &time_limit, int &memory_limit) 
     }catch (ClientException &e){
         e.printException();
         ss.str("");
-        ss << boost::format("Execute command error in Judge::handleLangageResource") << "";
+        ss << boost::format("Execute command error in Judge::handleLangageResource()") << "";
         throw ClientAppException(ss.str());
     }
 }

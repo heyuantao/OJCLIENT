@@ -74,7 +74,7 @@ ClientSettings::ClientSettings(const std::string &config_file_path) {
     //other settings
     this->MAX_RUNINING = "2";
     this->SLEEP_TIME = "1";
-    this->LANG_SET = "1,2,3";
+    this->LANG_SET = "0,1";                 //default language set is 0,1 which is c and cpp
     this->JAVA_TIME_BONUS = "5";
     this->JAVA_MEMORY_BONUS = "512";
     this->JAVA_XMS = "-Xms64m";
