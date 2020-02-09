@@ -1072,8 +1072,9 @@ void Judge::runSolution(int task, int lang, int time_limit, int memory_limit, in
             break;
         case 3:
             ss.str("");
-            ss << boost::format("/usr/bin/java /usr/bin/java -Xmx%dM %s -Djava.security.manager -Djava.security.policy=./java.policy Main") % memory_limit % this->settings->JAVA_XMS <<"";
+            ss << boost::format("/usr/bin/java -Xmx%dM %s -Djava.security.manager -Djava.security.policy=./java.policy Main") % memory_limit % this->settings->JAVA_XMS <<"";
             //ss << boost::format("/usr/bin/java /usr/bin/java -Xmx%dM -Djava.security.manager -Djava.security.policy=./java.policy Main") % memory_limit <<"";
+            ClientLogger::ERROR(ss.str());
             this->executeExecvp(ss.str());
             break;
         case 4:
