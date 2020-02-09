@@ -25,13 +25,14 @@ using namespace std;
 class Daemon{
 private:
     bool daemon;                    //if run in daemon mode
+    bool debug;                     //if run in debug mode,with will display debug message and output to log file
     std::string daemon_home_path;
     std::string lock_file_name;
     std::string lock_file_path;
     ClientSettings *settings;        //setting from judge.conf
     Client *client;                  //client instance for web
 public:
-    Daemon(const std::string &daemon_home_path="/home/judge/",bool debug= false);
+    Daemon(const std::string &daemon_home_path="/home/judge/",bool daemon=true, bool debug=false);
     void init();
     ~Daemon();
     bool run();

@@ -29,9 +29,10 @@ using namespace std;
 
 //ClientSettings Daemon::settings
 
-Daemon::Daemon(const std::string &daemon_home_path,bool daemon){
+Daemon::Daemon(const std::string &daemon_home_path, bool daemon, bool debug){
     this->daemon_home_path = daemon_home_path;
     this->daemon = daemon;
+    this->debug = debug;
     this->lock_file_name = "etc/judge.pid";
     boost::filesystem::path lock_file_p(this->daemon_home_path);
     lock_file_p /= this->lock_file_name;
