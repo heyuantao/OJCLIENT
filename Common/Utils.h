@@ -58,6 +58,7 @@ public:
 public:
     ClientSettings(const std::string &config_file_path="/home/judge/etc/judge.conf");
     void init();
+    bool isInLanguageSet(int lang);
 private:
     std::map<string,string> fileContentToKeyValue();
     bool parseOneLineToKeyAndValue(std::string line,std::string &key,std::string &value);

@@ -174,3 +174,14 @@ void ClientSettings::init() {
     }
 }
 
+bool ClientSettings::isInLanguageSet(int lang) {
+    std::vector<std::string> lang_set_string_list;
+    boost::split(lang_set_string_list,this->LANG_SET,boost::is_any_of(","));
+    for(std::vector<string>::iterator itr= lang_set_string_list.begin();itr!=lang_set_string_list.end();itr++){
+        if(std::stoi(*itr)==lang){
+            return true;
+        }
+    }
+    return false;
+}
+
