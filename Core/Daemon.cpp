@@ -155,7 +155,7 @@ bool Daemon::work() {
     std::stringstream ss;
     vector<std::string> job_string_list = this->client->getJobs();
 
-    int max_running = stoi(this->settings->MAX_RUNINING);
+    int max_running = std::stoi(this->settings->MAX_RUNINING);
     int running = 0;
     std::vector<int> task_list(max_running,0);   //task slot from 0 to (max_running-1),and init with zero value
 
