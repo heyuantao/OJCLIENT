@@ -34,7 +34,7 @@ int main(){
 ```C
 int main(){
     while(1){
-        printf("Endless output !")
+        printf("Endless output !");
     }
 }
 ```
