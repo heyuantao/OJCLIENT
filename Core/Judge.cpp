@@ -85,6 +85,12 @@ void Judge::run() {
         return;
     };
 
+    //update user and problem info
+    this->client->updateUserInformation(username);
+    this->client->updateProblemInformation(problem);
+    ClientLogger::DEBUG("Update user and problem information for solution id "+this->solution+" in Judge::run()");
+
+
     ClientLogger::DEBUG("Clear workdir for solution id "+this->solution+" in Judge::run()");
     this->cleanWorkDirectory(this->judge_work_path);        //clear /home/judge/run0  0 is sampe as task
     chdir(this->judge_work_path.c_str());
@@ -180,12 +186,6 @@ void Judge::run() {
     if((ac_flag==JudgeResult::WA)&&(final_ac_flag==JudgeResult::WA)){
         // add diff info latter ,work to be done here
     }
-
-    //update user and problem info
-
-    this->client->updateUserInformation(username);
-    this->client->updateProblemInformation(problem);
-    ClientLogger::DEBUG("Update user and problem information for solution id "+this->solution+" in Judge::run()");
 
     //clear the work dir if the debug flag is true
     if(this->debug== false){
