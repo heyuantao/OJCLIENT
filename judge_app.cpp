@@ -30,8 +30,7 @@ int main(int argc, char** argv) {
     std::string solution,task,debug_string;
     bool debug;
     status = checkArg(argc, argv, solution, task, debug_string);
-
-    if(debug_string=="debug"){
+    if(boost::to_lower_copy(debug_string)=="debug"){
         debug= true;
     }else{
         debug= false;

@@ -8,48 +8,34 @@
 
 using namespace std;
 
-bool checkArg(int argc, char** argv, bool &daemon, bool &debug){
+bool checkArg(int argc, char** argv, bool &daemon){
     std::string daemon_string="";
-    std::string debug_string="";
     bool daemon_status = false;
-    bool debug_status = false;
 
-    if(argc>3){
+    if(argc>2){
         ClientLogger::ERROR("arg is not set properly !");
         exit(1);
     }
     if(argc==2){
         daemon_string = argv[1];
     }
-    if(argc==3){
-        daemon_string = argv[1];
-        debug_string = argv[2];
-    }
 
-    if(boost::to_lower_copy(daemon_string)=="nodaemon"){
+    if(boost::to_lower_copy(daemon_string)=="debug"){
         daemon_status = false;
     }else{
         daemon_status = true;
     }
 
-    if(boost::to_lower_copy(debug_string)=="debug"){
-        debug_status = true;
-    }else{
-        debug_status = false;
-    }
-
     daemon = daemon_status;
-    debug = debug_status;
 }
 
 int main(int argc, char** argv) {
     bool daemon= true;
-    bool debug = false;
     int status;
-    status = checkArg(argc, argv, daemon, debug);
+    status = checkArg(argc, argv, daemon);
 
     try {
-        Daemon job("/home/judge/", daemon, debug);
+        Daemon job("/home/judge/", daemon);
         job.init();
         job.run();
     } catch (ClientException &e) {

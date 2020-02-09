@@ -29,10 +29,10 @@ using namespace std;
 
 //ClientSettings Daemon::settings
 
-Daemon::Daemon(const std::string &daemon_home_path, bool daemon, bool debug){
+Daemon::Daemon(const std::string &daemon_home_path, bool daemon){
     this->daemon_home_path = daemon_home_path;
     this->daemon = daemon;
-    this->debug = debug;
+    //this->debug = debug;
     this->lock_file_name = "etc/judge.pid";
     boost::filesystem::path lock_file_p(this->daemon_home_path);
     lock_file_p /= this->lock_file_name;
@@ -235,8 +235,11 @@ bool Daemon::runJudge(int solution,int task) {
     setrlimit(RLIMIT_NPROC, &LIM);
 
     //execl("/usr/bin/judge_client", "/usr/bin/judge_client", std::to_string(solution).c_str(), std::to_string(task).c_str(), this->daemon_home_path.c_str(), (char *) NULL);
-    execl("/usr/local/bin/JUDGE", "/usr/local/bin/JUDGE", std::to_string(solution).c_str(), std::to_string(task).c_str(), (char *) NULL);
-
+    if(this->daemon== true){
+        execl("/usr/local/bin/JUDGE", "/usr/local/bin/JUDGE", std::to_string(solution).c_str(), std::to_string(task).c_str(), (char *) NULL);
+    }else{
+        execl("/usr/local/bin/JUDGE", "/usr/local/bin/JUDGE", std::to_string(solution).c_str(), std::to_string(task).c_str(), "debug", (char *) NULL);
+    }
     sleep(5);
     return false;
 }
