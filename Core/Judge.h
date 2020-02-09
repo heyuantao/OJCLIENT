@@ -84,6 +84,7 @@ public:
 
 private:
     void executeSystemCommand(const std::string &cmd);
+    void executeSystemCommandWithoutException(const std::string &cmd);
     void handleLangageResource(int lang, int &time_limit, int &memory_limit);
     bool compile(int lang,const std::string &workdir);
     void executeExecvp(const std::string &cmd);

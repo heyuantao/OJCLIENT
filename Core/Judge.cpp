@@ -223,6 +223,9 @@ void Judge::executeSystemCommand(const std::string &cmd) {
     }
 }
 
+void Judge::executeSystemCommandWithoutException(const std::string &cmd) {
+    int return_status = system(cmd.c_str());
+}
 
 //remove '\r' char and reduce multi space and table to one space
 std::string Judge::processString(const std::string &content) {
