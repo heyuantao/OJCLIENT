@@ -535,7 +535,7 @@ void HustojClient::updateUserInformation(const std::string username) {
 }
 
 void HustojClient::login(const std::string &token) {
-    CasablancaRest::api_key=token;
+    CasablancaRest::api_token=token;
 }
 
 bool HustojClient::checkLogin() {

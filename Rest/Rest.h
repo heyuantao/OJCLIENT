@@ -54,7 +54,8 @@ private:
 //use miscrosoft Casablanca(cpprestsdk) to get of post
 class CasablancaRest{
 public:
-    static std::string api_key;                                 //init with ""
+    //static std::string api_key;                                 //init with ""
+    static std::string api_token;
 public:
     static Response post(std::string api,HttpFormData form);
 };

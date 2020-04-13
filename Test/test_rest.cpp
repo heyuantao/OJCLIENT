@@ -18,7 +18,7 @@ using namespace web::http::client;          // HTTP client features
 using namespace concurrency::streams;       // Asynchronous streams
 using namespace std;
 
-int main(){
+void test_acm(){
     vector<string> job_list;
     try {
         string url = "http://acm01e.syslab.org/admin/problem_judge.php";
@@ -35,4 +35,30 @@ int main(){
     }catch(...){
         cout<<"System error !"<<endl;
     }
+}
+
+void test_rest(){
+    vector<string> job_list;
+    try {
+        string url = "http://127.0.0.1:5001/api/v1/judgeclient/test/";
+        HttpFormData form;
+        form.addItem("getpending", "1");
+        form.addItem("oj_lang_set", "0,1,2,3");
+        form.addItem("max_running", "10");
+
+        //string result = WgetRest::post(url, form).data;
+        string result = CasablancaRest::post(url, form).data;
+        //WgetRest::post(url, form).status
+        cout << "This is response !" << endl;
+        cout << result;
+    }catch(ClientNetworkException &e){
+        cout<<"Network error happend"<<endl;
+    }catch(...){
+        cout<<"System error !"<<endl;
+    }
+}
+
+int main(){
+    //test_acm();
+    test_rest();
 }

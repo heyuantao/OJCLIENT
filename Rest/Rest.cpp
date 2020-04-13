@@ -95,7 +95,7 @@ Response WgetRest::post(std::string url,HttpFormData form_data) {
     return res;
 }
 
-string CasablancaRest::api_key="";
+string CasablancaRest::api_token="";
 
 Response CasablancaRest::post(std::string url, HttpFormData form) {
     http_client client(U(url));
@@ -107,11 +107,11 @@ Response CasablancaRest::post(std::string url, HttpFormData form) {
         request.headers().add("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         request.headers().add("Content-Length", "100");  //request.headers().add("Host", "acm01e.syslab.org");
         request.headers().add("X-Requested-With", "XMLHttpRequest");
-        request.headers().add("API-KEY",CasablancaRest::api_key);
-        //std::cout<<"API KEY:"<<CasablancaRest::api_key<<endl;
+        request.headers().add("Authorization", "Token " + CasablancaRest::api_token);
+        /*request.headers().add("API-KEY",CasablancaRest::api_key);
         if(CasablancaRest::api_key==""){
             ClientLogger::ERROR("Find api_key is emtpy in CasablancaRest::post");
-        }
+        }*/
         request.set_body(form.toFormString());
 
         http_response response = client.request(request).get();
