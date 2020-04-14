@@ -112,6 +112,11 @@ Response HustojClient::post(std::string url,HttpFormData form_data){
 
     try{
         return CasablancaRest::post(url,form_data);
+    }catch (ClientUnauthorizedException &e) {
+        e.printException();
+        ss.str("");
+        ss << boost::format("Unauthorized when post \"%s\" with data \"%s\" in HustojClient::post()") % url % form_data.toFormString() << "";
+        throw ClientMessageException(ss.str());
     }catch (ClientException &e) {
         e.printException();
         ss.str("");

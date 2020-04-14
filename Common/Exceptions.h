@@ -37,6 +37,12 @@ public:
     virtual void printException() ;
 };
 
+class ClientUnauthorizedException :  public ClientException{
+public:
+    ClientUnauthorizedException(std::string msg) ;
+    virtual void printException() ;
+};
+
 class ClientRunCommandException : public ClientException{
 public:
     ClientRunCommandException(std::string msg);

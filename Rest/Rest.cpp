@@ -119,7 +119,10 @@ Response CasablancaRest::post(std::string url, HttpFormData form) {
         response_content_string = buffer.collection();
 
         if(response.status_code()==status_codes::OK){
+            //status_codes  https://github.com/ambroff/casablanca/blob/d81fd457f877934b00258f4ca4ec079df556f0de/Release/include/cpprest/http_constants.dat
             return Response(response_content_string, true);
+        }else if(response.status_code()==status_codes::Unauthorized){
+            throw ClientUnauthorizedException("Unauthorized in CasablancaRest::post");
         }else{
             throw ClientNetworkException("Response is empty in CasablancaRest::post");
         }

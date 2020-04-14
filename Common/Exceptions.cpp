@@ -7,12 +7,21 @@ using namespace std;
 
 bool ClientException::debug = true;
 
+
 ClientNetworkException::ClientNetworkException(std::string msg){
     this->error_message = msg;
 }
 
 void ClientNetworkException::printException() {
     std::cout << "ClientNetowrkException : " << this->error_message << std::endl;
+}
+
+ClientUnauthorizedException::ClientUnauthorizedException(std::string msg){
+    this->error_message = msg;
+}
+
+void ClientUnauthorizedException::printException() {
+    std::cout << "ClientUnauthorizedException : " << this->error_message << std::endl;
 }
 
 ClientRunCommandException::ClientRunCommandException(std::string msg) {
