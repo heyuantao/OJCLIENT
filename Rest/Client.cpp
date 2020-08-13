@@ -50,19 +50,19 @@ std::vector<std::string> Client::getJobs(){
 }
 
 //result = 0 mean is judge,4 is success status
-void Client::updateSolution(int solution=1001, int result=0, int time=0, int memory=0, double pass_rate=0.0){
+void Client::updateSolution(const std::string &solution, int result=0, int time=0, int memory=0, double pass_rate=0.0){
 }
 
-void Client::addCompileErrorInformation(int solution) {
+void Client::addCompileErrorInformation(const std::string &solution) {
 }
 
-void Client::getSolution(int solution=1000, std::string work_dir="/tmp", int language=0) {
+void Client::getSolution(const std::string &solution, std::string work_dir="/tmp", int language=0) {
 }
 
-void Client::getSolutionInformation(int solution, int &problem, std::string &username, int &lang) {
+void Client::getSolutionInformation(const std::string &solution, const std::string &problem, std::string &username, int &lang) {
 }
 
-void Client::getProblemInformation(int problem, int &time_limit, int &mem_limit, int &isspj) {
+void Client::getProblemInformation(const std::string &problem, int &time_limit, int &mem_limit, int &isspj) {
 }
 
 void Client::addRuningErrorInformation(int solution) {
