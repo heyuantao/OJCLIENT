@@ -105,12 +105,12 @@ private:
     void copyJsRuntime(const std::string &workdir);          //not implement
     void initSafeSysCall(int lang);
     std::vector<std::string> getTestFileListFromLocal(const std::string &problem);
-    void prepareTestFile(int task, int problem, const string &test_file_name);
+    void prepareTestFile(const std::string &task, const std::string &problem, const string &test_file_name);
     void runSolution(int task, int lang, int time_limit, int memory_limit, int used_time);
     void watchSolution(pid_t process_id, int task, int lang,  int &ac_flag, int &memory_peak, int memory_limit, int &used_time, int time_limit, const std::string &test_file_name);
     int getProcessStatus(pid_t process_id, std::string key_name);
     int getPageFaultMemory(struct rusage &resource_usage);
-    void judgeSolution(int &ac_flag, int problem, int lang, int &memory_peak, int memory_limit, int &used_time, int time_limit, const std::string &test_file_name);
+    void judgeSolution(int &ac_flag, const std::string &problem, int lang, int &memory_peak, int memory_limit, int &used_time, int time_limit, const std::string &test_file_name);
     void fixJavaMistakeJudge(int &ac_flag, int &memory_peak, int memory_limit);
     void fixPythonMistakeJudge(int &ac_flag, int &memory_peak, int memory_limit);
 };

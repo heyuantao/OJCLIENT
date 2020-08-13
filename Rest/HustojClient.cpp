@@ -129,7 +129,15 @@ Response HustojClient::post(std::string url,HttpFormData form_data){
     }
 }
 
-//result = 0 mean is judge,4 is success status
+
+/**
+ *
+ * @param solution， 表示提交的编号
+ * @param result , 0表示正在判题，4表示判题成功
+ * @param time
+ * @param memory
+ * @param pass_rate
+ */
 void HustojClient::updateSolution(const std::string &solution, int result=0, int time=0, int memory=0, double pass_rate=0.0){
     try{
         std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
@@ -253,12 +261,12 @@ std::vector<std::string> HustojClient::parseResponseString(std::string content) 
     return string_vector;
 }
 
-void HustojClient::getProblemInformation(int problem, int &time_limit, int &mem_limit, int &isspj) {
+void HustojClient::getProblemInformation(const std::string &problem, int &time_limit, int &mem_limit, int &isspj) {
     try{
         std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         HttpFormData form;
         form.addItem("getprobleminfo","1");
-        form.addItem("pid",to_string(problem));
+        form.addItem("pid",problem);
 
         Response res = this->post(url,form);
 
@@ -297,7 +305,7 @@ string HustojClient::url_encoder(const std::string &value) {
     return escaped.str();
 }
 
-void HustojClient::addRuningErrorInformation(int solution) {
+void HustojClient::addRuningErrorInformation(const std::string &solution) {
     try{
         std::string run_error_file = "error.out";
         std::ifstream input_stream;
@@ -312,7 +320,7 @@ void HustojClient::addRuningErrorInformation(int solution) {
         std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         HttpFormData form;
         form.addItem("addreinfo","1");
-        form.addItem("sid",to_string(solution));
+        form.addItem("sid",solution);
         form.addItem("reinfo",url_encode_re_file_content);
         cout<<form.toFormString();
         Response res = this->post(url,form);
@@ -324,12 +332,12 @@ void HustojClient::addRuningErrorInformation(int solution) {
     }
 }
 
-void HustojClient::getTestDataList(int problem, std::vector<std::string> &data_list) {
+void HustojClient::getTestDataList(const std::string &problem, std::vector<std::string> &data_list) {
     try{
         std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         HttpFormData form;
         form.addItem("gettestdatalist","1");
-        form.addItem("pid",to_string(problem));
+        form.addItem("pid",problem);
 
         Response res = this->post(url,form);
 
@@ -342,7 +350,7 @@ void HustojClient::getTestDataList(int problem, std::vector<std::string> &data_l
     }
 }
 
-void HustojClient::getTestDataData(int problem, std::string filename, std::string & filecontent) {
+void HustojClient::getTestDataData(const std::string &problem, std::string filename, std::string & filecontent) {
     try{
         std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         std::stringstream stream;
@@ -363,7 +371,7 @@ void HustojClient::getTestDataData(int problem, std::string filename, std::strin
     }
 }
 
-void HustojClient::getTestDataDate(int problem, std::string filename, std::string &date) {
+void HustojClient::getTestDataDate(const std::string &problem, std::string filename, std::string &date) {
     try{
         std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         std::stringstream stream;
@@ -383,14 +391,14 @@ void HustojClient::getTestDataDate(int problem, std::string filename, std::strin
     }
 }
 
-void HustojClient::getTestFile(int problem, std::string data_dir) {
+void HustojClient::getTestFile(const std::string &problem, std::string data_dir) {
     std::vector<std::string> test_file_list;
     std::vector<std::string> test_file_path_string_list;
     std::vector<std::string> download_file_list;
 
     //create dir
     boost::filesystem::path problem_path(data_dir);
-    problem_path /= std::to_string(problem);
+    problem_path /= problem;
     this->createDirectoryIfNotExists(problem_path.string());
 
     //get test file
@@ -398,7 +406,7 @@ void HustojClient::getTestFile(int problem, std::string data_dir) {
 
     for(std::vector<std::string>::iterator item=test_file_list.begin();item!=test_file_list.end();item++){
         boost::filesystem::path file_path(data_dir);
-        file_path /= std::to_string(problem);
+        file_path /= problem;
         file_path /= *item;
         test_file_path_string_list.push_back(file_path.string());
     }
@@ -439,7 +447,7 @@ void HustojClient::getTestFile(int problem, std::string data_dir) {
         std::string file_content = "";
 
         boost::filesystem::path file_path(data_dir);
-        file_path /= std::to_string(problem);
+        file_path /= problem;
         file_path /= *item;
         file_path_string = file_path.string();
 
@@ -508,14 +516,14 @@ void HustojClient::createDirectoryIfNotExists(const std::string &dir_path_string
     }
 }
 
-void HustojClient::updateProblemInformation(int problem) {
+void HustojClient::updateProblemInformation(const std::string &problem) {
     try{
         std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         std::stringstream stream;
 
         HttpFormData form;
         form.addItem("updateproblem","1");
-        form.addItem("pid",std::to_string(problem));
+        form.addItem("pid",problem);
 
         Response res = this->post(url,form);
     }catch (ClientException &e){

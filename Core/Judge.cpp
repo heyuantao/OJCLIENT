@@ -156,7 +156,7 @@ void Judge::run() {
     std::vector<std::string> test_in_file_list = this->getTestFileListFromLocal(problem);
     for(std::vector<std::string>::iterator itr = test_in_file_list.begin(); itr!=test_in_file_list.end(); itr++){
         ClientLogger::DEBUG("Prepare input test \""+*itr+"\" file in Judge::run()");
-        this->prepareTestFile(stoi(this->task), problem, *itr);
+        this->prepareTestFile(this->task, problem, *itr);
         this->initSafeSysCall(lang);
 
         pid_t process_pid = fork();
@@ -975,11 +975,14 @@ std::vector<std::string> Judge::getTestFileListFromLocal(const std::string &prob
     return test_file_list;
 }
 
-void Judge::prepareTestFile(int task, int problem, const std::string &test_file_name) {
+void Judge::prepareTestFile(const std::string &task, const std::string &problem, const std::string &test_file_name) {
     std::stringstream ss;
-    //copy the test file to dir
+
+    /**
+     * 把测试文件拷贝到相应目录
+     */
     boost::filesystem::path test_file_source_path(this->judge_data_path);
-    test_file_source_path /= to_string(problem);
+    test_file_source_path /= problem;
     test_file_source_path /= test_file_name;                                    // the path string is in this format /home/judge/data/1000/data.in
 
     boost::filesystem::path test_file_dist_path(this->judge_work_path);
@@ -1291,12 +1294,12 @@ int Judge::getPageFaultMemory(struct rusage &resource_usage) {
     return m_minflt;
 }
 
-void Judge::judgeSolution(int &ac_flag, int problem, int lang, int &memory_peak, int memory_limit, int &used_time, int time_limit, const std::string &test_file_name) {
+void Judge::judgeSolution(int &ac_flag, const std::string &problem, int lang, int &memory_peak, int memory_limit, int &used_time, int time_limit, const std::string &test_file_name) {
     // number of test not use
     boost::filesystem::path user_file_path(this->judge_work_path);
     boost::filesystem::path out_file_path(this->judge_data_path);
     user_file_path /= "user.out";                                                    // /home/judge/runX/user.out
-    out_file_path /= to_string(problem);
+    out_file_path /= problem;
     out_file_path /= test_file_name;
     out_file_path.replace_extension("out");                           //  /home/judge/data/100X/test0.out
 
