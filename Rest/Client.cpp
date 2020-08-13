@@ -59,16 +59,16 @@ void Client::addCompileErrorInformation(const std::string &solution) {
 void Client::getSolution(const std::string &solution, std::string work_dir="/tmp", int language=0) {
 }
 
-void Client::getSolutionInformation(const std::string &solution, const std::string &problem, std::string &username, int &lang) {
+void Client::getSolutionInformation(const std::string &solution, std::string &problem, std::string &username, int &lang) {
 }
 
 void Client::getProblemInformation(const std::string &problem, int &time_limit, int &mem_limit, int &isspj) {
 }
 
-void Client::addRuningErrorInformation(int solution) {
+void Client::addRuningErrorInformation(const std::string &solution) {
 }
 
-void Client::getTestFile(int problem, std::string data_dir) {
+void Client::getTestFile(const std::string &problem, std::string data_dir) {
 }
 
 void Client::updateUserInformation(const std::string username) {
@@ -80,7 +80,7 @@ void Client::login(const std::string &token) {
 bool Client::checkLogin() {
 }
 
-void Client::updateProblemInformation(int problem) {
+void Client::updateProblemInformation(const std::string &problem) {
 
 }
 

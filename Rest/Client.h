@@ -62,7 +62,7 @@ public:
      * no exception, just set the api token
      * @param token
      */
-    virtual void login(const string &token);
+    virtual void login(const std::string &token);
 
     /**
      * exception, send the api to check if is login
@@ -95,7 +95,7 @@ public:
      * @param username
      * @param lang
      */
-    virtual void getSolutionInformation(const std::string &solution,const std::string &problem,std::string &username,int &lang);
+    virtual void getSolutionInformation(const std::string &solution, std::string &problem,std::string &username,int &lang);
 
     /**
      * 添加编译阶段的信息，会抛出异常

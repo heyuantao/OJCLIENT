@@ -130,7 +130,7 @@ Response HustojClient::post(std::string url,HttpFormData form_data){
 }
 
 //result = 0 mean is judge,4 is success status
-void HustojClient::updateSolution(int solution=1001, int result=0, int time=0, int memory=0, double pass_rate=0.0){
+void HustojClient::updateSolution(const std::string &solution, int result=0, int time=0, int memory=0, double pass_rate=0.0){
     try{
         std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
 
@@ -138,7 +138,7 @@ void HustojClient::updateSolution(int solution=1001, int result=0, int time=0, i
         int sim_id=0;
         HttpFormData form;
         form.addItem("update_solution","1");
-        form.addItem("sid",to_string(solution));
+        form.addItem("sid",solution);
         form.addItem("result",to_string(result));
         form.addItem("time",to_string(time));
         form.addItem("memory",to_string(memory));
@@ -154,7 +154,7 @@ void HustojClient::updateSolution(int solution=1001, int result=0, int time=0, i
     }
 }
 
-void HustojClient::addCompileErrorInformation(int solution) {
+void HustojClient::addCompileErrorInformation(const std::string &solution) {
     try{
         std::string compile_error_file = "ce.txt";
         std::ifstream input_stream;
@@ -169,7 +169,7 @@ void HustojClient::addCompileErrorInformation(int solution) {
         std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         HttpFormData form;
         form.addItem("addceinfo","1");
-        form.addItem("sid",to_string(solution));
+        form.addItem("sid",solution);
         form.addItem("ceinfo",url_encode_ce_file_content);
         //cout<<form.toFormString();
         Response res = this->post(url,form);
@@ -182,12 +182,12 @@ void HustojClient::addCompileErrorInformation(int solution) {
     }
 }
 
-void HustojClient::getSolution(int solution=1000, std::string work_dir="/tmp", int language=0) {
+void HustojClient::getSolution(const std::string &solution, std::string work_dir="/tmp", int language=0) {
     try{
         std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         HttpFormData form;
         form.addItem("getsolution","1");
-        form.addItem("sid",to_string(solution));
+        form.addItem("sid",solution);
         Response res = this->post(url,form);
 
         // Generate the dist source file path
@@ -215,12 +215,12 @@ std::string HustojClient::getHttpApiUrl(const std::string &api) {
     return url;
 }
 
-void HustojClient::getSolutionInformation(int solution, int &problem, std::string &username, int &lang) {
+void HustojClient::getSolutionInformation(const std::string &solution, std::string &problem, std::string &username, int &lang) {
     try{
         std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
         HttpFormData form;
         form.addItem("getsolutioninfo","1");
-        form.addItem("sid",to_string(solution));
+        form.addItem("sid",solution);
 
         Response res = this->post(url,form);
         std::vector<std::string> string_vector = this->parseResponseString(res.data);
@@ -229,7 +229,8 @@ void HustojClient::getSolutionInformation(int solution, int &problem, std::strin
             ss << boost::format("Error in http request:url=%s and form=%s") %url %form.toFormString() <<"";
             throw ClientNetworkException(ss.str());
         }
-        problem = std::stoi(string_vector[0]);
+        //problem = std::stoi(string_vector[0]);
+        problem = string_vector[0];
         username = string_vector[1];
         lang = std::stoi(string_vector[2]);
     }catch (ClientException &e){

@@ -73,8 +73,9 @@ Judge::~Judge() {
 }
 
 void Judge::run() {
-    int solution,problem,lang;                      //solution id,problem id,lang
-    std::string username;                           //user_id
+    std::string solution,problem;                   //solution id,problem id, 两个通常为一个值
+    int lang;                                       //lang 语言的类型
+    std::string username;                           //user_id, 为solution_id对应的用户编号,实际上基本用不到
     int time_limit,memory_limit,is_special_judge;   //problem other settings
 
 
@@ -106,7 +107,7 @@ void Judge::run() {
         return;
     }
 
-    ClientLogger::DEBUG("Get problem id "+to_string(problem)+" information in Judge::run()");
+    ClientLogger::DEBUG("Get problem id "+ problem +" information in Judge::run()");
     this->client->getProblemInformation(problem,time_limit,memory_limit,is_special_judge);
 
     //get solution
@@ -116,7 +117,10 @@ void Judge::run() {
     ClientLogger::DEBUG("Prepare resource and java policy file for solution id "+this->solution+" Judge::run()");
     this->handleLangageResource(lang,time_limit,memory_limit);
 
-    //compile the source code
+
+    /**
+     * 开始编译用户的题目代码
+     */
     ClientLogger::DEBUG("Compile solution id "+this->solution+" source file in Judge::run()");
     bool compile_status = this->compile(lang, this->judge_work_path);
     if(compile_status== false){
@@ -130,11 +134,17 @@ void Judge::run() {
         //umount(this->judge_work_path.c_str());  // This directory is not mount why do this ?
     }
 
-    //get the test file for problem
-    ClientLogger::DEBUG("Get problem id "+to_string(problem)+" test file in Judge::run()");
+
+    /**
+     * 获取程序运行的测试文件
+     */
+    ClientLogger::DEBUG("Get problem id "+ problem +" test file in Judge::run()");
     this->client->getTestFile(problem,this->judge_data_path);
 
-    //run solution and judge it
+
+    /**
+     * 运行程序并判断程序是否正确
+     */
     ClientLogger::DEBUG("Run solution id "+this->solution+" in Judge::run()");
     int used_time = 0;
     int memory_peak = 0;
@@ -942,10 +952,10 @@ void Judge::initSafeSysCall(int lang) {
 
 }
 
-std::vector<std::string> Judge::getTestFileListFromLocal(int problem) {
+std::vector<std::string> Judge::getTestFileListFromLocal(const std::string &problem) {
     std::vector<std::string> test_file_list;
     boost::filesystem::path dir_path(this->judge_data_path);    //data path
-    dir_path /= to_string(problem);                                 //problem path
+    dir_path /= problem;                                           //problem path
 
     if(!boost::filesystem::exists(dir_path)){
         std::stringstream ss;
