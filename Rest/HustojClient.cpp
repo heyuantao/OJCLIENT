@@ -17,8 +17,9 @@ using namespace std;
 
 const std::string HustojClient::check_login_api = "/admin/problem_judge.php";
 const std::string HustojClient::problem_judge_api = "/admin/problem_judge.php";
+//这是新的API接口，将用REST方式来实现
+const std::string HustojClient::api_url = "/api/v1/onlinejudge/";
 
-//std::vector<std::string> const HustojClient::language_extension = { "c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "scm","c","cc","lua","js","go" };
 
 HustojClient::HustojClient(const std::string &base_url){
     this->site_base_url = base_url;
@@ -48,12 +49,18 @@ bool HustojClient::checkLogin() {
     }
 }*/
 
+/**
+ * 向API接口发送请求，并获得要判题的一系列题目号的列表
+ * POST /{base_api_url}/getjobs/
+ * @return
+ */
 std::vector<std::string> HustojClient::getJobs(){
     std::vector<std::string> job_list;
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);  //string url = "http://ww.syslab.org/sdf";
+        std::string url = this->getHttpApiUrl(HustojClient::api_url)+"jobs/";
+
         HttpFormData form;
-        form.addItem("getpending","1");
+        //form.addItem("getpending","1");
         form.addItem("oj_lang_set","0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17");  //get all kind of problem
         form.addItem("max_running","10");
 
@@ -131,7 +138,7 @@ Response HustojClient::post(std::string url,HttpFormData form_data){
 
 
 /**
- *
+ * POST /{api_url}/updatesolution/
  * @param solution， 表示提交的编号
  * @param result , 0表示正在判题，4表示判题成功
  * @param time
@@ -140,12 +147,12 @@ Response HustojClient::post(std::string url,HttpFormData form_data){
  */
 void HustojClient::updateSolution(const std::string &solution, int result=0, int time=0, int memory=0, double pass_rate=0.0){
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::api_url)+"updatesolution/";
 
         int sim=0;
         int sim_id=0;
         HttpFormData form;
-        form.addItem("update_solution","1");
+        //form.addItem("update_solution","1");
         form.addItem("sid",solution);
         form.addItem("result",to_string(result));
         form.addItem("time",to_string(time));
@@ -162,6 +169,11 @@ void HustojClient::updateSolution(const std::string &solution, int result=0, int
     }
 }
 
+/**
+ * 会抛出异常
+ * POST /{api_url}/addcompileerrorinformation/
+ * @param solution
+ */
 void HustojClient::addCompileErrorInformation(const std::string &solution) {
     try{
         std::string compile_error_file = "ce.txt";
@@ -174,9 +186,9 @@ void HustojClient::addCompileErrorInformation(const std::string &solution) {
 
         std::string url_encode_ce_file_content = this->url_encoder(ce_file_content);
 
-        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::api_url)+"addcompileerrorinformation/";
         HttpFormData form;
-        form.addItem("addceinfo","1");
+        //form.addItem("addceinfo","1");
         form.addItem("sid",solution);
         form.addItem("ceinfo",url_encode_ce_file_content);
         //cout<<form.toFormString();
@@ -190,11 +202,18 @@ void HustojClient::addCompileErrorInformation(const std::string &solution) {
     }
 }
 
+/**
+ * 会抛出异常
+ * POST /{api_url}/getsolution/
+ * @param solution
+ * @param work_dir
+ * @param language
+ */
 void HustojClient::getSolution(const std::string &solution, std::string work_dir="/tmp", int language=0) {
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::api_url)+"getsolution/";
         HttpFormData form;
-        form.addItem("getsolution","1");
+        //form.addItem("getsolution","1");
         form.addItem("sid",solution);
         Response res = this->post(url,form);
 
@@ -223,11 +242,19 @@ std::string HustojClient::getHttpApiUrl(const std::string &api) {
     return url;
 }
 
+/**
+ * 会抛出异常
+ * POST /{api_url}/getsolutioninformation/
+ * @param solution
+ * @param problem
+ * @param username
+ * @param lang
+ */
 void HustojClient::getSolutionInformation(const std::string &solution, std::string &problem, std::string &username, int &lang) {
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api)+"getsolutioninformation/";
         HttpFormData form;
-        form.addItem("getsolutioninfo","1");
+        //form.addItem("getsolutioninfo","1");
         form.addItem("sid",solution);
 
         Response res = this->post(url,form);
@@ -305,6 +332,11 @@ string HustojClient::url_encoder(const std::string &value) {
     return escaped.str();
 }
 
+/**
+ * 会抛出异常
+ * POST /{api_url}/addruningerrorinformation/
+ * @param solution
+ */
 void HustojClient::addRuningErrorInformation(const std::string &solution) {
     try{
         std::string run_error_file = "error.out";
@@ -317,9 +349,9 @@ void HustojClient::addRuningErrorInformation(const std::string &solution) {
 
         std::string url_encode_re_file_content = this->url_encoder(re_file_content);
 
-        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::api_url)+"addruningerrorinformation/";
         HttpFormData form;
-        form.addItem("addreinfo","1");
+        //form.addItem("addreinfo","1");
         form.addItem("sid",solution);
         form.addItem("reinfo",url_encode_re_file_content);
         cout<<form.toFormString();

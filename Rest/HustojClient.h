@@ -23,9 +23,15 @@ class HustojClient : public Client{
 private:
     static const std::string check_login_api;            // = "/admin/problem_judge.php";
     static const std::string problem_judge_api;          // = "/admin/problem_judge.php";
-//    static const std::vector<std::string> language_extension ;
+    /**
+     * 定义了AIP接口的地址，没有域名信息
+     */
+    static const std::string api_url;
 
 private:
+    /**
+     * 这是是网站的域名信息
+     */
     std::string site_base_url = "";
 
 //public:
@@ -58,6 +64,7 @@ public:
 
     /**
      * 会抛出异常
+     * POST /{api_url}/updatesolution/
      * @param solution
      * @param result
      * @param time
@@ -68,6 +75,7 @@ public:
 
     /**
      * 会抛出异常
+     * POST /{api_url}/getsolution/
      * @param solution
      * @param work_dir
      * @param language
@@ -76,6 +84,7 @@ public:
 
     /**
      * 会抛出异常
+     * POST /{api_url}/getsolutioninformation/
      * @param solution
      * @param problem
      * @param username
@@ -85,12 +94,14 @@ public:
 
     /**
      * 会抛出异常
+     * POST /{api_url}/addcompileerrorinformation/
      * @param solution
      */
     virtual void addCompileErrorInformation(const std::string &solution);
 
     /**
      * 会抛出异常
+     * POST /{api_url}/addruningerrorinformation/
      * @param solution
      */
     virtual void addRuningErrorInformation(const std::string &solution);
@@ -125,6 +136,7 @@ public:
 
     /**
      * 会抛出异常
+     * POST /{api_url}/getjobs/
      * @return
      */
     virtual std::vector<std::string> getJobs();
