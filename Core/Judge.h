@@ -84,13 +84,54 @@ public:
     void cleanWorkDirectory(const std::string &dir);
 
 private:
+    /**
+     * 执行系统命令，可能会抛出异常
+     * @param cmd
+     */
     void executeSystemCommand(const std::string &cmd);
+
+    /**
+     * 执行系统命令，屏蔽异常
+     * @param cmd
+     */
     void executeSystemCommandWithoutException(const std::string &cmd);
+
+    /**
+     * 处理各类语言使用的资源
+     * @param lang
+     * @param time_limit
+     * @param memory_limit
+     */
     void handleLangageResource(int lang, int &time_limit, int &memory_limit);
+
+    /**
+     * 编译用户提交的代码
+     * @param lang
+     * @param workdir
+     * @return
+     */
     bool compile(int lang,const std::string &workdir);
+
+    /**
+     * 执行系统命令
+     * @param cmd
+     */
     void executeExecvp(const std::string &cmd);
+
+    /**
+     * 获取文件的大小
+     * @param file_path
+     * @return
+     */
     long getFileSize(const std::string &file_path);
+
+    /**
+     * 拷贝各类语言的运行环境
+     * @param lang
+     * @param workdir
+     */
     void copyRuntime(int lang,const std::string &workdir);
+
     void copyShellRuntime(const std::string &workdir);
     void copyBashRuntime(const std::string  &workdir);
     void copyPythonRuntime(const std::string &workdir);
@@ -103,15 +144,94 @@ private:
     void copyGuileRuntime(const std::string &workdir);       //not implement
     void copyLuaRuntime(const std::string &workdir);         //not implement
     void copyJsRuntime(const std::string &workdir);          //not implement
+
+    /**
+     * 初始化安全的系统调用
+     * @param lang
+     */
     void initSafeSysCall(int lang);
+
+    /**
+     * 从本地获得测试文件
+     * @param problem
+     * @return
+     */
     std::vector<std::string> getTestFileListFromLocal(const std::string &problem);
+
+    /**
+     * 在本机准备测试文件
+     * @param task
+     * @param problem
+     * @param test_file_name
+     */
     void prepareTestFile(const std::string &task, const std::string &problem, const string &test_file_name);
-    void runSolution(int task, int lang, int time_limit, int memory_limit, int used_time);
-    void watchSolution(pid_t process_id, int task, int lang,  int &ac_flag, int &memory_peak, int memory_limit, int &used_time, int time_limit, const std::string &test_file_name);
+
+    /**
+     * 运行程序
+     * @param task
+     * @param lang
+     * @param time_limit
+     * @param memory_limit
+     * @param used_time
+     */
+    void runSolution(const std::string &task, int lang, int time_limit, int memory_limit, int used_time);
+
+    /**
+     * 检查运行的状态
+     * @param process_id
+     * @param task
+     * @param lang
+     * @param ac_flag
+     * @param memory_peak
+     * @param memory_limit
+     * @param used_time
+     * @param time_limit
+     * @param test_file_name
+     */
+    void watchSolution(pid_t process_id, const std::string &task, int lang,  int &ac_flag, int &memory_peak, int memory_limit, int &used_time, int time_limit, const std::string &test_file_name);
+
+    /**
+     * 获取进程的状态（判题进程）
+     * @param process_id
+     * @param key_name
+     * @return
+     */
     int getProcessStatus(pid_t process_id, std::string key_name);
+
+    /**
+     * 获取页面出错时的内存信息
+     * @param resource_usage
+     * @return
+     */
     int getPageFaultMemory(struct rusage &resource_usage);
+
+    /**
+     * 判题过程，判断题目的正确性
+     * @param ac_flag
+     * @param problem
+     * @param lang
+     * @param memory_peak
+     * @param memory_limit
+     * @param used_time
+     * @param time_limit
+     * @param test_file_name
+     */
     void judgeSolution(int &ac_flag, const std::string &problem, int lang, int &memory_peak, int memory_limit, int &used_time, int time_limit, const std::string &test_file_name);
+
+    /**
+     * 修正对Java程序的判题偏差
+     * @param ac_flag
+     * @param memory_peak
+     * @param memory_limit
+     */
     void fixJavaMistakeJudge(int &ac_flag, int &memory_peak, int memory_limit);
+
+    /**
+     * 修正对Python的判题偏差
+     * @param ac_flag
+     * @param memory_peak
+     * @param memory_limit
+     */
     void fixPythonMistakeJudge(int &ac_flag, int &memory_peak, int memory_limit);
 };
 

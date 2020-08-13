@@ -1,6 +1,7 @@
 //
 // Created by he_yu on 2020-01-27.
 //
+
 #include <sstream>
 #include <string>
 #include <fstream>
@@ -19,7 +20,6 @@
 #include "../Common/Exceptions.h"
 #include "../Common/Logger.h"
 #include "../Rest/Client.h"
-
 
 using namespace std;
 
@@ -45,6 +45,9 @@ Judge::Judge(const std::string &judge_home_path, const std::string &solution, co
     this->client = NULL;
 }
 
+/**
+ * 初始化判题机实例
+ */
 void Judge::init(){
     try{
         this->settings = new ClientSettings("/home/judge/etc/judge.conf");
@@ -97,8 +100,9 @@ void Judge::run() {
     chdir(this->judge_work_path.c_str());
 
     ClientLogger::DEBUG("Get solution id "+this->solution+" information in Judge::run()");
-    solution= std::stoi(this->solution);
-    this->client->getSolutionInformation(solution,problem,username,lang);
+/*    solution= std::stoi(this->solution);
+    this->client->getSolutionInformation(solution,problem,username,lang);*/
+    this->client->getSolutionInformation(this->solution,problem,username,lang);
 
     ClientLogger::DEBUG("Check if solution id "+this->solution+" is in language set Judge::run()");
     if(this->settings->isInLanguageSet(lang)== false){
@@ -110,10 +114,16 @@ void Judge::run() {
     ClientLogger::DEBUG("Get problem id "+ problem +" information in Judge::run()");
     this->client->getProblemInformation(problem,time_limit,memory_limit,is_special_judge);
 
-    //get solution
+    /**
+     * 获取提交的代码的信息，并将其拷贝到相应的目录中
+     */
     ClientLogger::DEBUG("Get solution id "+this->solution+" source code into dir in Judge:run()");
     this->client->getSolution(solution,this->judge_work_path,lang);
 
+
+    /**
+     * 获取每种语言对应的资源上限要求
+     */
     ClientLogger::DEBUG("Prepare resource and java policy file for solution id "+this->solution+" Judge::run()");
     this->handleLangageResource(lang,time_limit,memory_limit);
 
@@ -155,18 +165,18 @@ void Judge::run() {
 
     std::vector<std::string> test_in_file_list = this->getTestFileListFromLocal(problem);
     for(std::vector<std::string>::iterator itr = test_in_file_list.begin(); itr!=test_in_file_list.end(); itr++){
-        ClientLogger::DEBUG("Prepare input test \""+*itr+"\" file in Judge::run()");
+        ClientLogger::DEBUG("Prepare input test \"" + *itr + "\" file in Judge::run()");
         this->prepareTestFile(this->task, problem, *itr);
         this->initSafeSysCall(lang);
 
         pid_t process_pid = fork();
         if(process_pid==0){
             ClientLogger::DEBUG("Run solution id "+this->solution+" on test file in Judge::run()");
-            this->runSolution(stoi(this->task), lang, time_limit, memory_limit, used_time);
+            this->runSolution(this->task, lang, time_limit, memory_limit, used_time);
         }else{
             //num_of_test = num_of_test +1;
             ClientLogger::DEBUG("Watch solution id "+this->solution+" in Judge::run()");
-            this->watchSolution(process_pid,stoi(this->task),lang,ac_flag,memory_peak,memory_limit,used_time,time_limit,*itr);
+            this->watchSolution(process_pid, this->task,lang,ac_flag,memory_peak,memory_limit,used_time,time_limit,*itr);
             ClientLogger::DEBUG("Judge solution id "+this->solution+" in Judge::run()");
             this->judgeSolution(ac_flag,problem,lang,memory_peak,memory_limit,used_time,time_limit,*itr);
             //judge solution
@@ -1010,7 +1020,8 @@ void Judge::prepareTestFile(const std::string &task, const std::string &problem,
     }
 }
 
-void Judge::runSolution(int task, int lang, int time_limit, int memory_limit, int used_time) {   //Child process
+void Judge::runSolution(const std::string &task, int lang, int time_limit, int memory_limit, int used_time) {
+    //Child process
     nice(19);                                                       //lowest running priority
     chdir(this->judge_work_path.c_str());
 
@@ -1020,7 +1031,8 @@ void Judge::runSolution(int task, int lang, int time_limit, int memory_limit, in
 
     ptrace(PTRACE_TRACEME, 0, NULL, NULL);
 
-    if(lang!=3){                                                        //not java
+    //not java
+    if(lang!=3){
         chroot(this->judge_work_path.c_str());
     }
 
@@ -1137,7 +1149,7 @@ void Judge::runSolution(int task, int lang, int time_limit, int memory_limit, in
     exit(0);
 }
 
-void Judge::watchSolution(pid_t process_id, int task, int lang, int &ac_flag, int &memory_peak, int memory_limit, int &used_time,
+void Judge::watchSolution(pid_t process_id, const std::string &task, int lang, int &ac_flag, int &memory_peak, int memory_limit, int &used_time,
                           int time_limit, const std::string &test_file_name) {
     int temp_memory_peak;
     int process_status, process_signal, process_exit_code;
