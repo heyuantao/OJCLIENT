@@ -20,13 +20,29 @@
 using namespace std;
 
 class HustojClient : public Client{
+
 private:
-    static const std::string check_login_api;            // = "/admin/problem_judge.php";
-    static const std::string problem_judge_api;          // = "/admin/problem_judge.php";
     /**
-     * 定义了AIP接口的地址，没有域名信息
+     * 这些私有变量在r2的版本种将要废弃
      */
-    static const std::string api_url;
+    //static const std::string check_login_api;            // = "/admin/problem_judge.php";
+    //static const std::string problem_judge_api;          // = "/admin/problem_judge.php";
+    /**
+     * 定义了AIP接口的地址，不同的功能使用不同的API接口
+     */
+    static const std::string get_jobs_api;
+    static const std::string update_solution_api;
+    static const std::string add_compile_error_information_api;
+    static const std::string get_solution_api;
+    static const std::string get_solution_information_api;
+    static const std::string get_problem_information_api;
+    static const std::string add_runing_error_information_api;
+    static const std::string get_test_data_list_api;
+    static const std::string get_test_data_data_api;
+    static const std::string get_test_data_date_api;
+    static const std::string update_problem_information_api;
+    static const std::string update_user_information_api;
+    static const std::string check_login_api;
 
 private:
     /**

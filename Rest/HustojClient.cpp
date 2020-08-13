@@ -15,10 +15,22 @@
 
 using namespace std;
 
-const std::string HustojClient::check_login_api = "/admin/problem_judge.php";
-const std::string HustojClient::problem_judge_api = "/admin/problem_judge.php";
-//这是新的API接口，将用REST方式来实现
-const std::string HustojClient::api_url = "/api/v1/onlinejudge/";
+/**
+ * 定义了AIP接口的地址，不同的功能使用不同的API接口。在提交数据时使用POST的方法进行
+ */
+const std::string HustojClient::get_jobs_api                       ="/api/v1/onlinejudgeclient/getjobs/";
+const std::string HustojClient::update_solution_api                ="/api/v1/onlinejudgeclient/updatesolution/";
+const std::string HustojClient::add_compile_error_information_api  ="/api/v1/onlinejudgeclient/addcompileerrorinformation/";
+const std::string HustojClient::get_solution_api                   ="/api/v1/onlinejudgeclient/getsolution/";
+const std::string HustojClient::get_solution_information_api       ="/api/v1/onlinejudgeclient/getsolutioninformation/";
+const std::string HustojClient::get_problem_information_api        ="/api/v1/onlinejudgeclient/getprobleminformation/";
+const std::string HustojClient::add_runing_error_information_api   ="/api/v1/onlinejudgeclient/addruningerrorinformation/";
+const std::string HustojClient::get_test_data_list_api             ="/api/v1/onlinejudgeclient/gettestdatalist/";
+const std::string HustojClient::get_test_data_data_api             ="/api/v1/onlinejudgeclient/gettestdatadata/";
+const std::string HustojClient::get_test_data_date_api             ="/api/v1/onlinejudgeclient/gettestdatadate/";
+const std::string HustojClient::update_problem_information_api     ="/api/v1/onlinejudgeclient/updateprobleminformation/";
+const std::string HustojClient::update_user_information_api        ="/api/v1/onlinejudgeclient/updateuserinformation/";
+const std::string HustojClient::check_login_api                    ="/api/v1/onlinejudgeclient/checklogin/";
 
 
 HustojClient::HustojClient(const std::string &base_url){
@@ -51,13 +63,13 @@ bool HustojClient::checkLogin() {
 
 /**
  * 向API接口发送请求，并获得要判题的一系列题目号的列表
- * POST /{base_api_url}/getjobs/
+ * POST
  * @return
  */
 std::vector<std::string> HustojClient::getJobs(){
     std::vector<std::string> job_list;
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::api_url)+"jobs/";
+        std::string url = this->getHttpApiUrl(HustojClient::get_jobs_api);
 
         HttpFormData form;
         //form.addItem("getpending","1");
@@ -138,7 +150,7 @@ Response HustojClient::post(std::string url,HttpFormData form_data){
 
 
 /**
- * POST /{api_url}/updatesolution/
+ * POST 数据
  * @param solution， 表示提交的编号
  * @param result , 0表示正在判题，4表示判题成功
  * @param time
@@ -147,7 +159,7 @@ Response HustojClient::post(std::string url,HttpFormData form_data){
  */
 void HustojClient::updateSolution(const std::string &solution, int result=0, int time=0, int memory=0, double pass_rate=0.0){
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::api_url)+"updatesolution/";
+        std::string url = this->getHttpApiUrl(HustojClient::update_solution_api);
 
         int sim=0;
         int sim_id=0;
@@ -171,7 +183,7 @@ void HustojClient::updateSolution(const std::string &solution, int result=0, int
 
 /**
  * 会抛出异常
- * POST /{api_url}/addcompileerrorinformation/
+ * POST
  * @param solution
  */
 void HustojClient::addCompileErrorInformation(const std::string &solution) {
@@ -186,7 +198,7 @@ void HustojClient::addCompileErrorInformation(const std::string &solution) {
 
         std::string url_encode_ce_file_content = this->url_encoder(ce_file_content);
 
-        std::string url = this->getHttpApiUrl(HustojClient::api_url)+"addcompileerrorinformation/";
+        std::string url = this->getHttpApiUrl(HustojClient::add_compile_error_information_api);
         HttpFormData form;
         //form.addItem("addceinfo","1");
         form.addItem("sid",solution);
@@ -204,14 +216,14 @@ void HustojClient::addCompileErrorInformation(const std::string &solution) {
 
 /**
  * 会抛出异常
- * POST /{api_url}/getsolution/
+ * POST
  * @param solution
  * @param work_dir
  * @param language
  */
 void HustojClient::getSolution(const std::string &solution, std::string work_dir="/tmp", int language=0) {
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::api_url)+"getsolution/";
+        std::string url = this->getHttpApiUrl(HustojClient::get_solution_api);
         HttpFormData form;
         //form.addItem("getsolution","1");
         form.addItem("sid",solution);
@@ -252,7 +264,7 @@ std::string HustojClient::getHttpApiUrl(const std::string &api) {
  */
 void HustojClient::getSolutionInformation(const std::string &solution, std::string &problem, std::string &username, int &lang) {
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api)+"getsolutioninformation/";
+        std::string url = this->getHttpApiUrl(HustojClient::get_solution_information_api);
         HttpFormData form;
         //form.addItem("getsolutioninfo","1");
         form.addItem("sid",solution);
@@ -290,9 +302,9 @@ std::vector<std::string> HustojClient::parseResponseString(std::string content) 
 
 void HustojClient::getProblemInformation(const std::string &problem, int &time_limit, int &mem_limit, int &isspj) {
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::get_problem_information_api);
         HttpFormData form;
-        form.addItem("getprobleminfo","1");
+        //form.addItem("getprobleminfo","1");
         form.addItem("pid",problem);
 
         Response res = this->post(url,form);
@@ -334,7 +346,7 @@ string HustojClient::url_encoder(const std::string &value) {
 
 /**
  * 会抛出异常
- * POST /{api_url}/addruningerrorinformation/
+ * POST
  * @param solution
  */
 void HustojClient::addRuningErrorInformation(const std::string &solution) {
@@ -349,7 +361,7 @@ void HustojClient::addRuningErrorInformation(const std::string &solution) {
 
         std::string url_encode_re_file_content = this->url_encoder(re_file_content);
 
-        std::string url = this->getHttpApiUrl(HustojClient::api_url)+"addruningerrorinformation/";
+        std::string url = this->getHttpApiUrl(HustojClient::add_runing_error_information_api);
         HttpFormData form;
         //form.addItem("addreinfo","1");
         form.addItem("sid",solution);
@@ -364,11 +376,16 @@ void HustojClient::addRuningErrorInformation(const std::string &solution) {
     }
 }
 
+/**
+ * POST发送数据
+ * @param problem
+ * @param data_list
+ */
 void HustojClient::getTestDataList(const std::string &problem, std::vector<std::string> &data_list) {
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::get_test_data_list_api);
         HttpFormData form;
-        form.addItem("gettestdatalist","1");
+        //form.addItem("gettestdatalist","1");
         form.addItem("pid",problem);
 
         Response res = this->post(url,form);
@@ -382,13 +399,19 @@ void HustojClient::getTestDataList(const std::string &problem, std::vector<std::
     }
 }
 
+/**
+ * POST数据
+ * @param problem
+ * @param filename
+ * @param filecontent
+ */
 void HustojClient::getTestDataData(const std::string &problem, std::string filename, std::string & filecontent) {
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::get_test_data_data_api);
         std::stringstream stream;
         stream << problem << "/" << filename;
         HttpFormData form;
-        form.addItem("gettestdata","1");
+        //form.addItem("gettestdata","1");
         form.addItem("filename",stream.str());
         Response res = this->post(url,form);
         filecontent = res.data;
@@ -403,13 +426,20 @@ void HustojClient::getTestDataData(const std::string &problem, std::string filen
     }
 }
 
+
+/**
+ * POST数据
+ * @param problem
+ * @param filename
+ * @param date
+ */
 void HustojClient::getTestDataDate(const std::string &problem, std::string filename, std::string &date) {
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::get_test_data_date_api);
         std::stringstream stream;
         stream << problem << "/" << filename;
         HttpFormData form;
-        form.addItem("gettestdatadate","1");
+        //form.addItem("gettestdatadate","1");
         form.addItem("filename",stream.str());
         Response res = this->post(url,form);
         date = res.data;
@@ -548,13 +578,18 @@ void HustojClient::createDirectoryIfNotExists(const std::string &dir_path_string
     }
 }
 
+
+/**
+ * POST数据
+ * @param problem
+ */
 void HustojClient::updateProblemInformation(const std::string &problem) {
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::update_problem_information_api);
         std::stringstream stream;
 
         HttpFormData form;
-        form.addItem("updateproblem","1");
+        //form.addItem("updateproblem","1");
         form.addItem("pid",problem);
 
         Response res = this->post(url,form);
@@ -564,13 +599,17 @@ void HustojClient::updateProblemInformation(const std::string &problem) {
     }
 }
 
+/**
+ * POST数据
+ * @param username
+ */
 void HustojClient::updateUserInformation(const std::string username) {
     try{
-        std::string url = this->getHttpApiUrl(HustojClient::problem_judge_api);
+        std::string url = this->getHttpApiUrl(HustojClient::update_user_information_api);
         std::stringstream stream;
 
         HttpFormData form;
-        form.addItem("updateuser","1");
+        //form.addItem("updateuser","1");
         form.addItem("user_id",username);
 
         Response res = this->post(url,form);
@@ -580,17 +619,25 @@ void HustojClient::updateUserInformation(const std::string username) {
     }
 }
 
+/**
+ * 不发送数据，仅仅在发送请求的头部加上Token
+ * @param token
+ */
 void HustojClient::login(const std::string &token) {
     CasablancaRest::api_token=token;
 }
 
+/**
+ * POST数据
+ * @return
+ */
 bool HustojClient::checkLogin() {
     std::string url = this->getHttpApiUrl(HustojClient::check_login_api);
     HttpFormData form;
     std::string result;
 
     try{
-        form.addItem("checklogin","1");
+        //form.addItem("checklogin","1");
         Response res = this->post(url,form);
         result = res.data;
         if(result.size()==0){
