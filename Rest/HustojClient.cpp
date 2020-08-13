@@ -37,6 +37,7 @@ HustojClient::HustojClient(const std::string &base_url){
     this->site_base_url = base_url;
 };
 
+
 HustojClient::~HustojClient() {
 }
 
@@ -256,7 +257,7 @@ std::string HustojClient::getHttpApiUrl(const std::string &api) {
 
 /**
  * 会抛出异常
- * POST /{api_url}/getsolutioninformation/
+ * POST
  * @param solution
  * @param problem
  * @param username
@@ -290,7 +291,12 @@ void HustojClient::getSolutionInformation(const std::string &solution, std::stri
     }
 }
 
-//Response is split by next line ,parse it into vector<string>
+
+/**
+ * 按换行分割字符串并返回
+ * @param content 多行字符串
+ * @return 字符串列表
+ */
 std::vector<std::string> HustojClient::parseResponseString(std::string content) {
     std::vector<std::string> string_vector;
     std::istringstream stream(content);
@@ -300,6 +306,13 @@ std::vector<std::string> HustojClient::parseResponseString(std::string content) 
     return string_vector;
 }
 
+/**
+ * POST数据
+ * @param problem   题目编号
+ * @param time_limit  时间限制
+ * @param mem_limit  内存限制
+ * @param isspj   是否需要特殊判题
+ */
 void HustojClient::getProblemInformation(const std::string &problem, int &time_limit, int &mem_limit, int &isspj) {
     try{
         std::string url = this->getHttpApiUrl(HustojClient::get_problem_information_api);
@@ -321,6 +334,11 @@ void HustojClient::getProblemInformation(const std::string &problem, int &time_l
     }
 }
 
+/**
+ * URL编码
+ * @param value
+ * @return
+ */
 string HustojClient::url_encoder(const std::string &value) {
     std::ostringstream escaped;
     escaped.fill('0');

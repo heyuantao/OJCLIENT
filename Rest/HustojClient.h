@@ -23,11 +23,6 @@ class HustojClient : public Client{
 
 private:
     /**
-     * 这些私有变量在r2的版本种将要废弃
-     */
-    //static const std::string check_login_api;            // = "/admin/problem_judge.php";
-    //static const std::string problem_judge_api;          // = "/admin/problem_judge.php";
-    /**
      * 定义了AIP接口的地址，不同的功能使用不同的API接口
      */
     static const std::string get_jobs_api;
@@ -46,12 +41,9 @@ private:
 
 private:
     /**
-     * 这是是网站的域名信息
+     * 这是是网站的域名信息,与API接口的地址组合后使用
      */
     std::string site_base_url = "";
-
-//public:
-//    static std::string getLanguageExtensionById(int lang);
 
 
 public:
