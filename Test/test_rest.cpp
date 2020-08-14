@@ -18,6 +18,15 @@ using namespace web::http::client;          // HTTP client features
 using namespace concurrency::streams;       // Asynchronous streams
 using namespace std;
 
+std::vector<std::string> parseResponseString(std::string content) {
+    std::vector<std::string> string_vector;
+    std::istringstream stream(content);
+    for (std::string item; stream >> item; ){
+        string_vector.push_back(item);
+    }
+    return string_vector;
+}
+
 void test_acm(){
     vector<string> job_list;
     try {
@@ -48,11 +57,20 @@ void test_rest(){
         form.addItem("max_running", "10");
 
         //string result = WgetRest::post(url, form).data;
-        CasablancaRest::api_token="abc1231";
+        CasablancaRest::api_token="abc123";
         string result = CasablancaRest::post(url, form).data;
         //WgetRest::post(url, form).status
         std::cout << "This is response !" << endl;
         std::cout << result;
+
+        std::cout << "This is response in line format!" << endl;
+        vector<string> lines=parseResponseString(result);
+        std::cout << lines.size() << endl;
+        for(std::vector<std::string>::iterator item=lines.begin();item!=lines.end();item++){
+            std::cout<<*item<<"###";
+        }
+        std::cout<<endl;
+
     }catch(ClientNetworkException &e){
         std::cout<<"Network error happend"<<endl;
     }catch(...){
