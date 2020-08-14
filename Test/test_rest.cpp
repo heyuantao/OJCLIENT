@@ -28,33 +28,35 @@ void test_acm(){
         form.addItem("max_running", "10");
 
         string result = WgetRest::post(url, form).data;
-        cout << "This is response !" << endl;
-        cout << result;
+        std::cout << "This is response !" << endl;
+        std::cout << result;
     }catch(ClientNetworkException &e){
-        cout<<"Network error happend"<<endl;
+        std::cout<<"Network error happend"<<endl;
     }catch(...){
-        cout<<"System error !"<<endl;
+        std::cout<<"System error !"<<endl;
     }
 }
 
 void test_rest(){
     vector<string> job_list;
     try {
-        string url = "http://127.0.0.1:5001/api/v1/judgeclient/test/";
-        HttpFormData form;
-        form.addItem("getpending", "1");
+        string url = "http://172.16.16.180:8080/api/v1/onlinejudgeclient/test/";
+
+
+        HttpFormData form; //form.addItem("getpending", "1");
         form.addItem("oj_lang_set", "0,1,2,3");
         form.addItem("max_running", "10");
 
         //string result = WgetRest::post(url, form).data;
+        CasablancaRest::api_token="abc1231";
         string result = CasablancaRest::post(url, form).data;
         //WgetRest::post(url, form).status
-        cout << "This is response !" << endl;
-        cout << result;
+        std::cout << "This is response !" << endl;
+        std::cout << result;
     }catch(ClientNetworkException &e){
-        cout<<"Network error happend"<<endl;
+        std::cout<<"Network error happend"<<endl;
     }catch(...){
-        cout<<"System error !"<<endl;
+        std::cout<<"System error !"<<endl;
     }
 }
 

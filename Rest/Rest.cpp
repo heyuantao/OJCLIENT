@@ -107,7 +107,8 @@ Response CasablancaRest::post(std::string url, HttpFormData form) {
         request.headers().add("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         request.headers().add("Content-Length", "100");  //request.headers().add("Host", "acm01e.syslab.org");
         request.headers().add("X-Requested-With", "XMLHttpRequest");
-        request.headers().add("Authorization", "Token " + CasablancaRest::api_token);
+        request.headers().add("Authorization", CasablancaRest::api_token);
+        //request.headers().add("Authorization", "Token " + CasablancaRest::api_token);
         /*request.headers().add("API-KEY",CasablancaRest::api_key);
         if(CasablancaRest::api_key==""){
             ClientLogger::ERROR("Find api_key is emtpy in CasablancaRest::post");
@@ -122,8 +123,10 @@ Response CasablancaRest::post(std::string url, HttpFormData form) {
             //status_codes  https://github.com/ambroff/casablanca/blob/d81fd457f877934b00258f4ca4ec079df556f0de/Release/include/cpprest/http_constants.dat
             return Response(response_content_string, true);
         }else if(response.status_code()==status_codes::Unauthorized){
+            std::cout<<"Unauthorized in CasablancaRest::post"<<endl;
             throw ClientUnauthorizedException("Unauthorized in CasablancaRest::post");
         }else{
+            std::cout<<"Response is empty in CasablancaRest::post"<<endl;
             throw ClientNetworkException("Response is empty in CasablancaRest::post");
         }
     }catch (ClientNetworkException &e) {
@@ -131,6 +134,7 @@ Response CasablancaRest::post(std::string url, HttpFormData form) {
     }catch (...){
         std::stringstream ss;
         ss << boost::format("Unknow exception in post data \"%\" with data \"%s\" in CasablancaRest::post") % url % form.toFormString() <<"";
+        std::cout<<ss.str()<<endl;
         throw ClientNetworkException(ss.str());
     }
 
