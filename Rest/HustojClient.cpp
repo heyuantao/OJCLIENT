@@ -500,12 +500,15 @@ void HustojClient::getTestFile(const std::string &problem, std::string data_dir)
         //ClientFile localfile(local_file_path);
         boost::filesystem::path local_file_path(local_file_path_string);
         if(!boost::filesystem::exists(local_file_path)){
-        //if(localfile.exist()== false){
+            //if(localfile.exist()== false){
             download_file_list.push_back(remote_file);
             continue;
         }
 
         //file exist but is old than server , just pull it
+        //This parts may not need any more,because we use judgeserver
+        /**
+
         this->getTestDataDate(problem,remote_file, remote_file_time_string);
 
         struct stat filestat;
@@ -518,6 +521,7 @@ void HustojClient::getTestFile(const std::string &problem, std::string data_dir)
             download_file_list.push_back(remote_file);
             continue;
         }
+        */
     }
 
     //cout<<"File to Download !"<<endl;
