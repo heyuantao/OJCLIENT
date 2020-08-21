@@ -40,7 +40,7 @@ private:
     bool becameDaemonProcess();
     bool alreadyRunning() ;
     bool work();
-    bool runJudge(int solution,int task);
+    bool runJudge(std::string solution,int task);
 };
 
 #endif //OJCLIENT_DAEMON_H

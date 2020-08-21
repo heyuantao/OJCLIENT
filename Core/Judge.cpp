@@ -118,7 +118,7 @@ void Judge::run() {
      * 获取提交的代码的信息，并将其拷贝到相应的目录中
      */
     ClientLogger::DEBUG("Get solution id "+this->solution+" source code into dir in Judge:run()");
-    this->client->getSolution(solution,this->judge_work_path,lang);
+    this->client->getSolution(this->solution,this->judge_work_path,lang);
 
 
     /**
@@ -134,12 +134,12 @@ void Judge::run() {
     ClientLogger::DEBUG("Compile solution id "+this->solution+" source file in Judge::run()");
     bool compile_status = this->compile(lang, this->judge_work_path);
     if(compile_status== false){
-        this->client->addCompileErrorInformation(solution);
-        this->client->updateSolution(solution, JudgeResult::CE, 0, 0, 0.0);
+        this->client->addCompileErrorInformation(this->solution);
+        this->client->updateSolution(this->solution, JudgeResult::CE, 0, 0, 0.0);
         ClientLogger::DEBUG("Compile solution id "+this->solution+" source code error in Judge::run()");
         return;
     }else{
-        this->client->updateSolution(solution, JudgeResult::RI, 0, 0, 0.0);
+        this->client->updateSolution(this->solution, JudgeResult::RI, 0, 0, 0.0);
         ClientLogger::DEBUG("Compile solution id "+this->solution+"source code finished in Judge::run()");
         //umount(this->judge_work_path.c_str());  // This directory is not mount why do this ?
     }
@@ -193,7 +193,7 @@ void Judge::run() {
 
     if((ac_flag==JudgeResult::RE)||(final_ac_flag==JudgeResult::RE)){
         ClientLogger::DEBUG("Judge result to solution id "+this->solution+" is RE in Judge::run()");
-        this->client->addRuningErrorInformation(solution);
+        this->client->addRuningErrorInformation(this->solution);
     }
     if(ac_flag==JudgeResult::TL){
         used_time = time_limit*1000;
@@ -201,7 +201,7 @@ void Judge::run() {
     if(test_in_file_list.size()>0){                         //calc pass passing rate on every test file
         pass_rate = pass_rate/test_in_file_list.size();     //test_in_file_list.size() is the number of test file
     }
-    this->client->updateSolution(solution,final_ac_flag,used_time,memory_peak>>10,pass_rate);
+    this->client->updateSolution(this->solution,final_ac_flag,used_time,memory_peak>>10,pass_rate);
     ClientLogger::DEBUG("The final judge result to solution id "+this->solution+" is "+JudgeResult::getStatusDescribeById(final_ac_flag)+" and the pass rate is "+to_string(pass_rate)+" in Judge:run()");
     if((ac_flag==JudgeResult::WA)&&(final_ac_flag==JudgeResult::WA)){
         // add diff info latter ,work to be done here

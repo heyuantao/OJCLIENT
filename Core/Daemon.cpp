@@ -186,9 +186,8 @@ bool Daemon::work() {
                 *find_task_itr = process_id;
                 running = running +1;
             } else if (process_id==0){           // child process
-                int solution_id = std::stoi(*job_itr);
+                std::string solution_id = *job_itr;
                 int task_id = find_task_itr-task_list.begin();
-
                 this->runJudge(solution_id,task_id);
                 exit(0);
             }
@@ -212,10 +211,10 @@ bool Daemon::work() {
     return true;
 }
 
-bool Daemon::runJudge(int solution,int task) {
+bool Daemon::runJudge(std::string solution,int task) {
     std::stringstream ss;
     ss.str("");
-    ss << boost::format("Start client with solution %d at solt %d in Daemon::runJudge()") % solution % task << "";
+    ss << boost::format("Start client with solution %s at solt %d in Daemon::runJudge()") % solution % task << "";
     ClientLogger::DEBUG(ss.str());
 
     struct rlimit LIM;
@@ -236,9 +235,9 @@ bool Daemon::runJudge(int solution,int task) {
 
     //execl("/usr/bin/judge_client", "/usr/bin/judge_client", std::to_string(solution).c_str(), std::to_string(task).c_str(), this->daemon_home_path.c_str(), (char *) NULL);
     if(this->daemon== true){
-        execl("/usr/local/bin/JUDGE", "/usr/local/bin/JUDGE", std::to_string(solution).c_str(), std::to_string(task).c_str(), (char *) NULL);
+        execl("/usr/local/bin/JUDGE", "/usr/local/bin/JUDGE", solution.c_str(), std::to_string(task).c_str(), (char *) NULL);
     }else{
-        execl("/usr/local/bin/JUDGE", "/usr/local/bin/JUDGE", std::to_string(solution).c_str(), std::to_string(task).c_str(), "debug", (char *) NULL);
+        execl("/usr/local/bin/JUDGE", "/usr/local/bin/JUDGE", solution.c_str(), std::to_string(task).c_str(), "debug", (char *) NULL);
     }
     sleep(5);
     return false;

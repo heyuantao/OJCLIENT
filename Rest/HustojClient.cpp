@@ -74,8 +74,9 @@ std::vector<std::string> HustojClient::getJobs(){
 
         HttpFormData form;
         //form.addItem("getpending","1");
-        form.addItem("oj_lang_set","0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17");  //get all kind of problem
-        form.addItem("max_running","10");
+        //form.addItem("oj_lang_set","0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17");  //get all kind of problem
+        form.addItem("oj_lang_set","0,1,3");
+        form.addItem("max_running","2");
 
         Response res = this->post(url,form);
         std::string result = res.data;
